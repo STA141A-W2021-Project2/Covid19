@@ -12,9 +12,6 @@ covid <- read.csv("https://covid19.who.int/WHO-COVID-19-global-data.csv")
 #Using dataset of combined WHO and other 
 final <- read.csv("C:/Users/eshna/Downloads/final_data(1).csv")
 library(magrittr)
-### 2-way ANOVA (New Cases ~ Facial Cover + Travel Ban)
-
-
 
 
 ```
