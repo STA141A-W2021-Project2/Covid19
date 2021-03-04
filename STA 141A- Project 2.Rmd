@@ -1,0 +1,61 @@
+---
+title: "STA 141A- Project 2"
+author: "Eshna Prakash"
+date: "2/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+covid <- read.csv("https://covid19.who.int/WHO-COVID-19-global-data.csv")
+#Using dataset of combined WHO and other 
+final <- read.csv("C:/Users/eshna/Downloads/final_data(1).csv")
+library(magrittr)
+### 2-way ANOVA (New Cases ~ Facial Cover + Travel Ban)
+
+
+
+
+```
+
+## R Markdown
+
+```{r}
+#For Brazil 
+brazildata = final %>% filter(.,Country == "Brazil" & Date >= "2020-03-13" & Date <= "2020-06-20" )
+brazildata= mutate(brazildata, time = seq(1:100), CFR= brazildata$Cumulative_deaths/brazildata$Cumulative_cases)
+
+brazil2= lm(brazildata$CFR~poly(brazildata$time, degree=5, raw=T))
+summary(brazil2)
+plot(brazildata$time, brazildata$CFR)
+lines(smooth.spline(brazildata$time,predict(brazil2)),col='blue')
+
+#For India 
+indiadata = final %>% filter(.,Country == "India" & Date >= "2020-03-15" & Date <= "2020-06-23" )
+indiadata= mutate(indiadata, time = seq(1:101), CFR= indiadata$Cumulative_deaths/indiadata$Cumulative_cases)
+
+india2= lm(indiadata$CFR~poly(indiadata$time, degree=10, raw=T))
+summary(india2)
+plot(indiadata$time, indiadata$CFR)
+lines(smooth.spline(indiadata$time,predict(india2)),col='blue')
+
+#For Indonesia 
+indonesiadata = final %>% filter(.,Country == "Indonesia" & Date >= "2020-03-15" & Date <= "2020-06-23" )
+indonesiadata= mutate(indonesiadata, time = seq(1:101), CFR= indonesiadata$Cumulative_deaths/indonesiadata$Cumulative_cases)
+
+indonesia2= lm(indonesiadata$CFR~poly(indonesiadata$time, degree=25, raw=T))
+summary(indonesia2)
+plot(indonesiadata$time, indonesiadata$CFR)
+lines(smooth.spline(indonesiadata$time,predict(indonesia2)),col='blue')
+
+
+
+```
+
+## Including Plots
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
