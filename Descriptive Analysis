@@ -25,8 +25,9 @@ names(covid)
 final<- read.csv("C:/Users/eshna/Downloads/final_data.csv")
 
 #Nigeria
-nigeria = final %>% filter(.,Country == "Nigeria")
-nigeria= mutate(nigeria, time = seq(1:184), CFR= nigeria$Cumulative_deaths/nigeria$Cumulative_cases)
+nigeria=filter(final,(Country=="Nigeria"))
+nigeria=nigeria[89:188,]
+nigeria=mutate(nigeria,time=seq(1:100))
 
 plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nigeria")
 #
@@ -38,8 +39,9 @@ plot(nigeria$time, nigeria$Cumulative_deaths, main="Plot of Cumulative Deaths ov
 
 
 #Ethiopia 
-ethiopia = final %>% filter(.,Country == "Ethiopia" & Date >= "2020-04-19" & Date <= "2020-07-27" )
-ethiopia= mutate(ethiopia, time = seq(1:100), CFR= ethiopia$Cumulative_deaths/ethiopia$Cumulative_cases)
+ethiopia=filter(final,(Country=="Ethiopia"))
+ethiopia=ethiopia[8:107,]
+ethiopia=mutate(ethiopia,time=seq(1:100))
 
 plot(ethiopia$time, ethiopia$New_cases, main="Plot of New Cases over time for Ethiopia")
 #
@@ -52,8 +54,9 @@ plot(ethiopia$time, ethiopia$Cumulative_deaths, main="Plot of Cumulative Deaths 
 
 
 #US
-usa = final %>% filter(.,Country == "United States" & Date >= "2020-03-03" & Date <= "2020-06-10" )
-usa= mutate(usa, time = seq(1:100), CFR= usa$Cumulative_deaths/usa$Cumulative_cases)
+usa=filter(final,(Country=="United States"))
+usa=usa[61:160,]
+usa=mutate(usa,time=seq(1:100))
 
 plot(usa$time, usa$New_cases, main="Plot of New Cases over time for USA")
 #
@@ -66,8 +69,9 @@ plot(usa$time, usa$Cumulative_deaths, main="Plot of Cumulative Deaths over time 
 
 
 #Brazil
-brazil = final %>% filter(.,Country == "Brazil" & Date >= "2020-03-13" & Date <= "2020-06-20" )
-brazil= mutate(brazil, time = seq(1:100), CFR= brazil$Cumulative_deaths/brazil$Cumulative_cases)
+brazil=filter(final,(Country=="Brazil"))
+brazil=brazil[71:170,]
+brail=mutate(brazil,time=seq(1:100))
 
 plot(brazil$time, brazil$New_cases, main="Plot of New Cases over time for Brazil")
 #
@@ -81,8 +85,9 @@ plot(brazil$time, brazil$Cumulative_deaths, main="Plot of Cumulative Deaths over
 
 
 #India
-india = final %>% filter(.,Country == "India" & Date >= "2020-03-15" & Date <= "2020-06-22" )
-india= mutate(india, time = seq(1:100), CFR= india$Cumulative_deaths/india$Cumulative_cases)
+india=filter(final,(Country=="India"))
+india=india[73:172,]
+india=mutate(india,time=seq(1:100))
 
 plot(india$time, india$New_cases, main="Plot of New Cases over time for India")
 #
@@ -94,8 +99,9 @@ plot(india$time, india$Cumulative_deaths, main="Plot of Cumulative Deaths over t
 #
 
 #Indonesia
-indonesia = final %>% filter(.,Country == "Indonesia" & Date >= "2020-03-15" & Date <= "2020-06-22" )
-indonesia= mutate(indonesia, time = seq(1:100), CFR= indonesia$Cumulative_deaths/indonesia$Cumulative_cases)
+indonesia=filter(final,(Country=="Indonesia"))
+indonesia=indonesia[73:172,]
+indonesia=mutate(indonesia,time=seq(1:100))
 
 plot(indonesia$time, indonesia$New_cases, main="Plot of New Cases over time for Indonesia")
 #
@@ -108,8 +114,9 @@ plot(indonesia$time, indonesia$Cumulative_deaths, main="Plot of Cumulative Death
 
 
 #Russia
-russia = final %>% filter(.,Country == "Russian Federation" & Date >= "2020-03-19" & Date <= "2020-06-26" )
-russia = mutate(russia, time = seq(1:100))
+russia=filter(final,(Country=="Russian Federation"))
+russia=russia[77:176,]
+russia=mutate(russia,time=seq(1:100))
 
 plot(russia$time, russia$New_cases, main="Plot of New Cases over time for Russia")
 #
@@ -121,8 +128,9 @@ plot(russia$time, russia$Cumulative_deaths, main="Plot of Cumulative Deaths over
 #
 
 #Turkey
-turkey = final %>% filter(.,Country == "Turkey" & Date >= "2020-03-19" & Date <= "2020-06-26" )
-turkey = mutate(turkey, Time = seq(1:100))
+turkey=filter(final,(Country=="Turkey"))
+turkey=turkey[77:176,]
+turkey=mutate(turkey,time=seq(1:100))
 
 plot(turkey$time, turkey$New_cases, main="Plot of New Cases over time for Turkey")
 #
@@ -134,8 +142,10 @@ plot(turkey$time, russia$Cumulative_deaths, main="Plot of Cumulative Deaths over
 #
 
 #Pakistan
-pakistan = final %>% filter(.,Country == "Pakistan" & Date >= "2020-03-17" & Date <= "2020-06-24" )
-pakistan = mutate(pakistan, Time = seq(1:100))
+pakistan=filter(final,(Country=="Pakistan"))
+pakistan=pakistan[75:174,]
+pakistan=mutate(pakistan,time=seq(1:100))
+
 
 plot(pakistan$time, pakistan$New_cases, main="Plot of New Cases over time for Pakistan")
 #
@@ -179,6 +189,7 @@ plot(china$time, china$Cumulative_deaths, main="Plot of Cumulative Deaths over t
 japan=filter(final,(Country=="Japan"))
 japan=japan[50:149,]
 japan=mutate(japan,time=seq(1:100))
+
 
 plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan")
 #
