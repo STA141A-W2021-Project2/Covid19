@@ -1,0 +1,188 @@
+---
+title: "Models for Selected Countries (Jasper) (30-100)"
+author: "Jasper Cheng"
+date: "3/3/2021"
+output: html_document
+---
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+newdata <- read.csv("WHO-COVID-19-global-data.csv")
+newdata %>% rename(Date="ï..Date_reported") -> newdata
+newdata %>% mutate(CFR=Cumulative_deaths/Cumulative_cases) -> newdata
+```
+
+```{r Visualize}
+plot(egypt$Time,egypt$CFR)
+plot(china$Time,china$CFR)
+plot(japan$Time,japan$CFR)
+```
+
+
+```{r}
+#For Egypt (choose 3, mod 2 only for comparison)
+egypt=filter(newdata,(Country=="Egypt"))
+egypt=egypt[73:172,]
+egypt=mutate(egypt,Time=seq(1:100))
+
+modegypt2=lm(egypt$CFR[30:100]~poly(egypt$Time[30:100],degree=2,raw=T))
+modegypt3=lm(egypt$CFR[30:100]~poly(egypt$Time[30:100],degree=3,raw=T))
+
+plot(egypt$Time[30:100],egypt$CFR[30:100])
+lines(smooth.spline(egypt$Time[30:100],predict(modegypt2)),col='red')
+lines(smooth.spline(egypt$Time[30:100],predict(modegypt3)),col='blue')
+
+plot(modegypt3)
+```
+
+```{r}
+#For Japan
+japan=filter(newdata,(Country=="Japan"))
+japan=japan[50:149,]
+japan=mutate(japan,Time=seq(1:100))
+
+modjapan2=lm(japan$CFR[30:100]~poly(japan$Time[30:100],degree=3,raw=T))
+
+plot(japan$Time[30:100],japan$CFR[30:100])
+lines(smooth.spline(japan$Time[30:100],predict(modjapan2)),col='red')
+
+summary(modjapan2)
+plot(modjapan2)
+```
+
+```{r}
+#For China (since the outliers are quite extreme, you guys could make a decision on what to do)
+china=filter(newdata,(Country=="China"))
+china=china[17:116,]
+china=mutate(china,Time=seq(1:100))
+
+modchina2=lm(china$CFR[30:100]~poly(china$Time[30:100],degree=3,raw=T))
+
+plot(china$Time[30:100],china$CFR[30:100])
+lines(smooth.spline(china$Time[30:100],predict(modchina2)),col='red')
+
+summary(modchina2)
+plot(modchina2)
+```
+
+```{r}
+#For Brazil 
+brazildata = final %>% filter(.,Country == "Brazil" & Date >= "2020-03-13" & Date <= "2020-06-20" )
+brazildata= mutate(brazildata, time = seq(1:100), CFR= brazildata$Cumulative_deaths/brazildata$Cumulative_cases)
+
+brazil2= lm(brazildata$CFR[30:100]~poly(brazildata$time[30:100], degree=3, raw=T))
+summary(brazil2)
+plot(brazildata$time[30:100], brazildata$CFR[30:100])
+lines(smooth.spline(brazildata$time[30:100],predict(brazil2)),col='blue')
+
+plot(brazil2)
+```
+```{r}
+#For India 
+indiadata = final %>% filter(.,Country == "India" & Date >= "2020-03-15" & Date <= "2020-06-22" )
+indiadata= mutate(indiadata, time = seq(1:100), CFR= indiadata$Cumulative_deaths/indiadata$Cumulative_cases)
+
+india2= lm(indiadata$CFR[30:100]~poly(indiadata$time[30:100], degree=4, raw=T))
+summary(india2)
+plot(indiadata$time[30:100], indiadata$CFR[30:100])
+lines(smooth.spline(indiadata$time[30:100],predict(india2)),col='blue')
+
+plot(india2)
+```
+```{r}
+#For Indonesia 
+indonesiadata = final %>% filter(.,Country == "Indonesia" & Date >= "2020-03-15" & Date <= "2020-06-22" )
+indonesiadata= mutate(indonesiadata, time = seq(1:100), CFR= indonesiadata$Cumulative_deaths/indonesiadata$Cumulative_cases)
+
+indonesia2= lm(indonesiadata$CFR[30:100]~poly(indonesiadata$time[30:100], degree=2, raw=T))
+summary(indonesia2)
+plot(indonesiadata$time[30:100], indonesiadata$CFR[30:100])
+lines(smooth.spline(indonesiadata$time[30:100],predict(indonesia2)),col='blue')
+
+plot(indonesia2)
+```
+
+```{r}
+#For Pakistan
+pakistandata = newdata %>% filter(.,Country == "Pakistan" & Date >= "2020-03-17" & Date <= "2020-06-24" )
+pakistandata = mutate(pakistandata, Time = seq(1:100))
+
+pakpoly.model = lm(CFR~ poly(Time, degree = 3 , raw = TRUE), data = pakistandata)
+
+plot(pakistandata$Time, pakistandata$CFR)
+lines(smooth.spline(pakistandata$Time,predict(pakpoly.model)),col='blue')
+
+summary(pakpoly.model)
+plot(pakpoly.model)
+```
+
+```{r}
+#For Russia
+russiadata = newdata %>% filter(.,Country == "Russian Federation" & Date >= "2020-03-19" & Date <= "2020-06-26" )
+russiadata = mutate(russiadata, Time = seq(1:100))
+
+
+russpoly.model = lm(CFR~ poly(Time, degree = 4, raw = TRUE), data = russiadata) # Which degee?
+
+plot(russiadata$Time, russiadata$CFR)
+lines(smooth.spline(russiadata$Time,predict(russpoly.model)),col='blue')
+
+summary(russpoly.model)
+plot(russpoly.model)
+```
+
+```{r}
+#For Turkey
+turkeydata = newdata %>% filter(.,Country == "Turkey" & Date >= "2020-03-19" & Date <= "2020-06-26" )
+turkeydata = mutate(turkeydata, Time = seq(1:100))
+turkpoly.model = lm(CFR~ poly(Time, degree = 2, raw = TRUE), data = turkeydata)
+
+plot(turkeydata$Time, turkeydata$CFR)
+lines(smooth.spline(turkeydata$Time,predict(turkpoly.model)),col='blue')
+
+summary(turkpoly.model)
+plot(turkpoly.model)
+```
+
+```{r}
+#For Nigeria 
+nigeriadata = final %>% filter(.,Country == "Nigeria" & Date >= "2020-03-31" & Date <= "2020-07-08" )
+nigeriadata= mutate(nigeriadata, time = seq(1:100), CFR= nigeriadata$Cumulative_deaths/nigeriadata$Cumulative_cases)
+
+nigeria2= lm(nigeriadata$CFR~poly(nigeriadata$time, degree=3, raw=T))
+summary(nigeria2)
+plot(nigeriadata$time, nigeriadata$CFR)
+lines(smooth.spline(nigeriadata$time,predict(nigeria2)),col='blue')
+
+plot(nigeria2)
+```
+
+```{r}
+#For Ethiopia 
+ethiopiadata = final %>% filter(.,Country == "Ethiopia" & Date >= "2020-04-19" & Date <= "2020-07-27" )
+ethiopiadata= mutate(ethiopiadata, time = seq(1:100), CFR= ethiopiadata$Cumulative_deaths/ethiopiadata$Cumulative_cases)
+
+ethiopia2= lm(ethiopiadata$CFR~poly(ethiopiadata$time, degree=3, raw=T))
+#stuck between choosing 3 or 4, 3 is more logical of a trend(leaning towards 3), 4 is more fitting and better sensitivity analysis
+summary(ethiopia2)
+plot(ethiopiadata$time, ethiopiadata$CFR)
+lines(smooth.spline(ethiopiadata$time,predict(ethiopia2)),col='blue')
+
+plot(ethiopia2)
+```
+
+```{r}
+#For US
+usdata = final %>% filter(.,Country == "United States" & Date >= "2020-03-03" & Date <= "2020-06-10" )
+usdata= mutate(usdata, time = seq(1:100), CFR= usdata$Cumulative_deaths/usdata$Cumulative_cases)
+
+us2= lm(usdata$CFR~poly(usdata$time, degree=4, raw=T))
+summary(us2)
+plot(usdata$time, usdata$CFR)
+lines(smooth.spline(usdata$time,predict(us2)),col='blue')
+
+plot(us2)
+```
