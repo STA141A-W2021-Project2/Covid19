@@ -363,6 +363,89 @@ fit4 <- lm(CFR ~ poly(time, 4)*Country, data = binddata)
 anova(fit3,fit4)
 ```
 # Sensitivity Analysis 
+#Sensitivity Analysis
+
+##Nigeria Plots
+```{r}
+nigeriaresid = plot(nigeria2,1)
+nigeriaqq = plot(nigeria2, 2)
+```
+##Ethiopia Plots
+```{r}
+ethiopiaresid = plot(ethiopia2,1)
+ethiopiaqq = plot(ethiopia2,2)
+```
+##USA Plots
+```{r}
+usaresid = plot(us2,1)
+usaqq = plot(us2,2)
+```
+##Brazil Plots
+```{r}
+brazilresid = plot(brazil2,1)
+brazilqq = plot(brazil2,2)
+```
+##India Plots
+```{r}
+indiaresid = plot(india2,1)
+indiaqq = plot(india2,2)
+```
+##Indonesia Plots
+```{r}
+indonesiaresid = plot(indonesia2,1)
+indonesiaqq = plot(indonesia2,2)
+```
+##Russia Plots
+```{r}
+russiaresid = plot(russpoly.model,1)
+russiaqq = plot(russpoly.model,2)
+```
+##Turkey Plots
+```{r}
+turkeyresid = plot(turkpoly.model,1)
+turkeyqq = plot(turkpoly.model,2)
+```
+##Pakistan Plots
+```{r}
+pakistanresid = plot(pakpoly.model,1)
+pakistanqq = plot(pakpoly.model,2)
+```
+##Egypt Plots
+```{r}
+egyptresid = plot(modegypt3,1)
+egyptqq = plot(modegypt3,2)
+```
+##China Plots
+```{r}
+chinaresid = plot(modchina2,1)
+chinaqq = plot(modchina2,2)
+```
+##Japan Plots
+```{r}
+japanresid = plot(modjapan2,1)
+japanqq = plot(modjapan2,2)
+```
+
+From the residual vs fitted and qq plots of the twelve countries, we observe that the model assumptions for the regression conducted are roughly met. The residual plots for all countries roughly exhibit homoscedasticity. The qq plots for the countries show the normality assumption is met as most of the points on the plots fall along the same line (indicating that our distribution has the same shape as the theoretical distribution). 
+
+##ANOVA Plots
+
+```{r}
+binddata = rbind(nigeria,ethiopia,usa,brazil,india,indonesia,russia,turkey,pakistan,egypt,china,japan)
+
+fit0 <- lm(CFR ~ poly(time, 3), data = binddata)
+fit1 <- lm(CFR ~ poly(time, 3)*Country, data = binddata)
+
+anova(fit0,fit1)
+
+plot(fit0,1)
+plot(fit0,2)
+plot(fit1)
+```
+
+The residual plot of fit0 (the model with time as the only predictor) contains points randomly scattered around zero. Most of the points of the qqplot of fit0 lie along the same line, Therefore, homoscedasticity and normality assumptions are met.
+
+The residual plot of fit1 (the model with time as the only predictor) contains points randomly scattered around zero. Most of the points of the qqplot of fit1 lie along the same line, Therefore, homoscedasticity and normality assumptions are met.
 
 # Conclusions 
 
