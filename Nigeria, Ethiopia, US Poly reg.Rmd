@@ -1,0 +1,101 @@
+---
+title: "Project 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Country CFR Regression
+
+#### Nigeria
+```{r}
+#library(tidyverse)
+
+#### Nigeria
+nigeria <- covid %>% filter(Country == "Nigeria") %>% filter(Cumulative_cases >= 100) %>%
+  filter(Date_reported < as.Date("2020-07-09"))
+nigeria$CFR <- nigeria$Cumulative_deaths/nigeria$Cumulative_cases
+
+
+### polynomial
+nigeria <- mutate(nigeria, Time = seq(1:100))
+nigeria.poly.model <- lm(CFR ~ poly(Time, degree = 2, raw = TRUE), data = nigeria)
+plot(nigeria.poly.model)
+
+# Third Degree
+nigeria.poly.third <- lm(CFR ~ poly(Time, degree = 3, raw = TRUE), data = nigeria)
+plot(nigeria.poly.third)
+
+ggplot(data = nigeria, mapping = aes(x = Time, y = CFR)) + geom_point()
+```
+
+
+#### Ethiopia
+```{r}
+
+# Ethiopia poly regression
+ethiopia <- covid %>% filter(Country == "Ethiopia") %>%
+  filter(Date_reported >= as.Date("2020-04-19") & Date_reported <= as.Date("2020-07-28"))
+  
+ethiopia$CFR <- ethiopia$Cumulative_deaths/ethiopia$Cumulative_cases
+ethiopia <- mutate(nigeria, Time = seq(1:100))
+eth.poly.model <- lm(CFR ~ poly(Time, degree = 2, raw = TRUE), data = ethiopia)
+plot(eth.poly.model)
+
+# Third Degree
+eth.poly.third <- lm(CFR~ poly(Time, degree = 3, raw = T), data = ethiopia)
+plot(eth.poly.third)
+
+ggplot(data = ethiopia, mapping = aes(x = Time, y = CFR)) + geom_point()
+
+```
+
+
+#### United States
+```{r}
+us <- covid %>% filter(Country == "United States of America") %>% filter(Cumulative_cases>= 100)%>%
+  filter(Date_reported < as.Date("2020-06-11"))
+us$CFR <- us$Cumulative_deaths/us$Cumulative_cases
+
+us <- mutate(us, Time = seq(1:100))
+us.poly.model <- lm(CFR~poly(Time, degree = 2, raw = TRUE), data = us)
+plot(us.poly.model)
+
+ggplot(data = us, mapping = aes(x = Time, y = CFR)) + geom_point()
+
+## third degree
+us.poly.third = lm(CFR~ poly(Time, degree = 3, raw = T), data = us)
+```
+
+
+### Visualizations
+```{r}
+# Linegraph: UK
+final$International_Travel= as.factor(final$International_Travel)
+final %>% filter(Country == "United Kingdom") %>% 
+  ggplot(mapping = aes(x = as.Date(Date), y = New_cases, colour = International_Travel)) +
+  geom_line()+ 
+  scale_color_manual(values=c("Green","Red"))
+
+final%>%filter(Country == "United Kingdom") %>%
+  ggplot(mapping = aes(x= as.Date(Date), y = Facial_Covering)) + geom_line()
+
+
+# Linegraph: US vs. travel ban
+final$International_Travel= as.factor(final$International_Travel)
+final %>% filter(Country == "United States") %>% 
+  ggplot(mapping = aes(x = as.Date(Date), y = New_cases, colour = International_Travel)) +
+  geom_line()+ 
+  scale_color_manual(values=c("Green","Red"))
+
+
+# Linegraph: US new cases and Facial Coverings
+final$Facial_Covering = as.factor(final$Facial_Covering)
+final %>% filter(Country == "United States") %>% 
+  ggplot(mapping = aes(x = as.Date(Date), y = New_cases, colour = Facial_Covering)) +
+  geom_line()+ 
+  scale_color_manual(values=c("Purple", "Blue", "Green", "Yellow","Red"))
+```
+
