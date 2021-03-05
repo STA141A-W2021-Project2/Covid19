@@ -1,7 +1,7 @@
 ---
-title: "STA 141A- Project 2"
-author: "Eshna Prakash"
-date: "3/4/2021"
+title: "STA 141A Project 2"
+author: "Ally Deremer, Eshna Prakash, Jose Lopez, Jasper Cheng"
+date: "3/5/2021"
 output: html_document
 ---
 
@@ -35,7 +35,7 @@ names(covid)
 nigeria=filter(covid,(Country=="Nigeria"))
 nigeria=nigeria[89:188,]
 nigeria=mutate(nigeria,time=seq(1:100))
-par(mfrow=c(2,1))
+par(mfrow=c(1,2))
 plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nigeria", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot we see a somewhat negative linear trend of new cases over time.
 plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "New Deaths")
@@ -242,34 +242,39 @@ plot(japanCFR, main="Plot of Japan CFR",xlab = "Time (in days)", ylab = "CFR")
 
 
 # Statistical Approach
-##Egypt Model
-```{r}
-#For Egypt (choose 3, mod 2 only for comparison)
-modegypt3=lm(CFR~poly(time,degree=3,raw=T), data = egypt)
+For statistical analysis, regression modeling will be employed. Through the descriptive analysis, it has been learned that data points are scattered mostly in a non-linear faction across every country under observation. Therefore, polynomial regression will be fitted according to human intuition. As it is known, there is a trade off between variance and bias for polynomial regression. While a high degree regression may represent every data point accurately, it does not necessarily reflect a meaningful trend and is incomparable to other regressions. Hence, the degree of polynomial regression is considered under a low bias, low variance basis, instead of sacrificing one for the other.
 
-plot(egypt$time,egypt$CFR)
-lines(smooth.spline(egypt$time,predict(modegypt3)),col='blue')
+
+##Nigeria Model
+```{r}
+#For Nigeria 
+nigeria2= lm(nigeria$CFR~poly(nigeria$time, degree=3, raw=TRUE))
+plot(nigeria$time, nigeria$CFR)
+lines(smooth.spline(nigeria$time,predict(nigeria2)),col='blue')
+
+```
+
+##Ethiopia Model
+```{r}
+#For Ethiopia 
+ethiopia2= lm(ethiopia$CFR~poly(ethiopia$time, degree=3, raw=T))
+#stuck between choosing 3 or 4, 3 is more logical of a trend(leaning towards 3), 4 is more fitting and better sensitivity analysis
+plot(ethiopia$time, ethiopia$CFR)
+lines(smooth.spline(ethiopia$time,predict(ethiopia2)),col='blue')
 
 
 ```
-##Japan Model
-```{r}
-#For Japan
-modjapan2=lm(japan$CFR~poly(japan$time,degree=4,raw=T))
 
-plot(japan$time,japan$CFR)
-lines(smooth.spline(japan$time,predict(modjapan2)),col='red')
+##USA Model
+```{r}
+#For US
+us2= lm(usa$CFR~poly(usa$time, degree=4, raw=T))
+
+plot(usa$time, usa$CFR)
+lines(smooth.spline(usa$time,predict(us2)),col='blue')
 
 ```
-##China Model
-```{r}
-#For China (since the outliers are quite extreme, you guys could make a decision on what to do)
 
-modchina2=lm(china$CFR~poly(china$time,degree=4,raw=T))
-
-plot(china$time,china$CFR)
-lines(smooth.spline(china$time,predict(modchina2)),col='red')
-```
 ##Brazil Model
 ```{r}
 #For Brazil 
@@ -295,6 +300,7 @@ plot(indonesia$time, indonesia$CFR)
 lines(smooth.spline(indonesia$time,predict(indonesia2)),col='blue')
 
 ```
+
 ##Pakistan Model
 ```{r}
 #For Pakistan
@@ -303,6 +309,7 @@ plot(pakistan$time, pakistan$CFR)
 lines(smooth.spline(pakistan$time,predict(pakpoly.model)),col='blue')
 
 ```
+
 ##Russia Model
 ```{r}
 #For Russia
@@ -319,37 +326,49 @@ plot(turkey$time, turkey$CFR)
 lines(smooth.spline(turkey$time,predict(turkpoly.model)),col='blue')
 
 ```
-##Nigeria Model
-```{r}
-#For Nigeria 
-nigeria2= lm(nigeria$CFR~poly(nigeria$time, degree=3, raw=TRUE))
-plot(nigeria$time, nigeria$CFR)
-lines(smooth.spline(nigeria$time,predict(nigeria2)),col='blue')
 
-```
-##Ethiopia Model
+##Egypt Model
 ```{r}
-#For Ethiopia 
-ethiopia2= lm(ethiopia$CFR~poly(ethiopia$time, degree=3, raw=T))
-#stuck between choosing 3 or 4, 3 is more logical of a trend(leaning towards 3), 4 is more fitting and better sensitivity analysis
-plot(ethiopia$time, ethiopia$CFR)
-lines(smooth.spline(ethiopia$time,predict(ethiopia2)),col='blue')
+#For Egypt (choose 3, mod 2 only for comparison)
+modegypt3=lm(CFR~poly(time,degree=3,raw=T), data = egypt)
+
+plot(egypt$time,egypt$CFR)
+lines(smooth.spline(egypt$time,predict(modegypt3)),col='blue')
 
 
 ```
-##USA Model
-```{r}
-#For US
-us2= lm(usa$CFR~poly(usa$time, degree=4, raw=T))
 
-plot(usa$time, usa$CFR)
-lines(smooth.spline(usa$time,predict(us2)),col='blue')
+##Japan Model
+```{r}
+#For Japan
+modjapan2=lm(japan$CFR~poly(japan$time,degree=4,raw=T))
+
+plot(japan$time,japan$CFR)
+lines(smooth.spline(japan$time,predict(modjapan2)),col='red')
 
 ```
+##China Model
+```{r}
+#For China (since the outliers are quite extreme, you guys could make a decision on what to do)
+
+modchina2=lm(china$CFR~poly(china$time,degree=4,raw=T))
+
+plot(china$time,china$CFR)
+lines(smooth.spline(china$time,predict(modchina2)),col='red')
+```
+
+
 
 
 # Results 
-```
+
+
+For an actual answer to our question of interest, there will be two approaches to reach suitable results: ANOVA, and confidence bands.
+
+In the following ANOVA models, data across all 12 countries will be fit into a regression of a certain polynomial, the same data set will then be fit into the same level of polynomial but with regards to each country. ANOVA will attempt to compare the two regression models to prove if country does have an effect on CFR over time. 
+
+Since this type of ANOVA model can only use one chosen degree of polynomials, the third and fourth degree will be tested since they are the most common regressions fitted above.
+```{r}
 binddata = rbind(nigeria,ethiopia,usa,brazil,india,indonesia,russia,turkey,pakistan,egypt,china,japan)
 
 fit0 <- lm(CFR ~ poly(time, 3), data = binddata)
@@ -362,8 +381,9 @@ fit4 <- lm(CFR ~ poly(time, 4)*Country, data = binddata)
 
 anova(fit3,fit4)
 ```
+As shown, the p-value is extremely low for both comparisons. This means that country does have an strong statistical effect on CFR over time for both regressions of third and fourth degree.
+
 # Sensitivity Analysis 
-#Sensitivity Analysis
 
 ##Nigeria Plots
 ```{r}
@@ -449,12 +469,19 @@ The residual plot of fit1 (the model with time as the only predictor) contains p
 
 # Conclusion
 This report aimed to investigate how Case Fatality Rate (CFR) for COVID-19 changes across time for 12 of the most populated countries in the world (2 most populated countries per WHO region), specifically over the first hundred days after the number of cumulative cases hits 100. Through a series of statistical analysis, this report was able to analyze the hypothesis stated earlier.
+
 It was hypothesized that the trends of CFR will vary significantly across these countries. The results of this report matches with the initial hypothesis. Through fitting the 12 observed countries’ CFR across time, a variety of regressions were chosen that fits the data the best. These polynomial regressions vary in correlation and degree of polynomials, which visually supports the hypothesis that CFR across time will be different for the countries. 
+
 For statistical and quantitative proof, employing ANOVA compares the polynomial regression that is not blocked by countries to the contrary. Since these regressions have a degree mainly of 3 and 4, these polynomial regressions were chosen for the ANOVA analysis. With an extremely low p-value, it was proven that countries do have a significant statistical effect on CFR across time, for both polynomial degrees of 3 and 4. Therefore, demonstrating CFR over time to not be constant over different countries at a highly significant level. 
+
 In order to be more specific and explore beyond the big picture, comparing the country’s regression lines side by side informs the difference between countries’ CFR over time. The use of simultaneous confidence bands, which shows the 95% confidence interval across the whole regression line, appears that even though some countries do share a similar trend and overlaps, the majority of regressions were very different from one another.  Hence, once again proving CFR trends over time is different for each country.
+
 Looking at these regressions may reflect how countries are able or not able to react in controlling the virus. It is observed that most CFR trends are fluctuating across the timeframe. A drop after a peak might be due to the implementation of a certain policy or a country gaining better knowledge on how to contain and treat the virus. While an increase after a trough may be hints of hitting medical capacity or loosening of policies. There are many external factors and reasons to explore beyond numbers of COVID cases and deaths. These are all topics that can be delved deeper in further and more complicated analysis, however are all mere guesses at the current analysis.
+
 The answer to the question of interest can be described as resounding and clear. However, it is important to note that this topic of interest has its own flaws and concerns to consider when interpreting the results.  In terms of the dataset itself, the prevalence of reported cases and deaths varies between countries. This may be due to socioeconomic, political and cultural differences in each country. The number of observations for each country is limited, which amplifies the variance caused by outliers. Forming the question of interest was also based on a lot of logical assumptions that may not be statistically or scientifically true. 
+
 As the question of interest states, this report hopes to discover if there are significant differences in CFR over the first 100 days over a 100 cases. The regression lines for each country are in no intention to be predictive, rather to be a reflection of a specific trend during a specific time. The choice of countries and the choice of the timeframe are all factors to be aware of when interpreting the regressions. Unfair comparisons between countries may be made, for example a country that has a later time frame because of reaching hundred cases later may have better knowledge on the virus than countries that were affected earlier.
+
 Overall, this report has been conclusive while assessed along with limitations. For further research, the reasons behind the trend can be explored, which could branch into a multitude of topics in politics, culture and science.
 
 
@@ -465,16 +492,3 @@ Sorci, G., Faivre, B., & Morand, S. (2020, November 03). Explaining among-countr
 Tadiri, C. P., Gisinger, T., Kautzy-Willer, A., Kublickiene, K., Herrero, M. T., Raparelli, V., Pilote, L., Norris, C. M., & GOING-FWD Consortium (2020). The influence of sex and gender domains on COVID-19 cases and mortality. CMAJ : Canadian Medical Association journal = journal de l'Association medicale canadienne, 192(36), E1041–E1045. https://doi.org/10.1503/cmaj.200971 
 World Health Organization. (2021, March 1) WHO press conference on coronavirus disease (COVID-19) [Interview Transcript]. Retrieved from https://www.who.int/multi-media/details/who-press-conference-on-coronavirus-disease-(covid-19)---1-march-2021 
 Used codes on confidence interval bands : https://stats.stackexchange.com/questions/231059/compare-the-statistical-significance-of-the-difference-between-two-polynomial-re
-
-```
-```
-## R Markdown
-
-```{r}
-
-
-
-
-```
-
-
