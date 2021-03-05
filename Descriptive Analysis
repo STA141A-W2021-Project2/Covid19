@@ -33,10 +33,6 @@ plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nige
 #In this plot we see a somewhat negative linear trend of new cases over time. 
 plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot there seems to be one data point that appears to be an outlier while the daily number of new deaths tends to stay below 20. 
-plot(nigeria$time, nigeria$Cumulative_cases, main="Plot of Cumulative Cases over time for Nigeria", xlab = "Time (in days)", ylab = "Cumulative Cases")
-# There appears to be an approximately linear trend between Cumulative Cases over time.
-plot(nigeria$time, nigeria$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "Cumulative Deaths")
-# There appears to be an approximately linear trend between Cumulative Deaths over time.
 
 #Ethiopia
 ethiopia=filter(final,(Country=="Ethiopia"))
