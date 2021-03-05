@@ -15,7 +15,7 @@ library(ggplot2)
 The dataset utilized in this study is from the World Health Organization (WHO) in the format of an excel file that is updated on a daily basis. The data set contains information about COVID-19 cases for each of the 237 countries data was collected from. Data collection began January 3, 2020 and this report uses all data collected until March 1, 2021. The number of new cases, cumulative cases, new deaths and cumulative deaths are recorded for each day of data collection. The hypotheses this report will focus on is that Case fatality rate will vary across different countries. 
 
 # Background 
-Coronavirus is a highly contagious respiratory illness which is also known as COVID-19. This virus spreads through droplets in the air when an infected person coughs or sneezes. There is no specific treatment for the virus and laboratory tests are required for confirmation of diagnosis. While most recover from COVID-19, some have symptoms that last for weeks or even months after recovering from acute illness. The long term effects of COVID-19 are not currently known and it is being investigated. Those with a higher risk of dying from COVID-19 and related complications are older people and those with underlying medical conditions. Prevention measures that can be taken against this virus include wearing facial coverings, frequent washing of hands and social distancing. Currently, there is an increase in global coronavirus cases which may be due to public health restrictions being lifted in addition to new coronavirus variants(WHO, 2021). Multiple vaccines have been developed for emergency use and over 245 million doses have been administered in 107 countries.
+Coronavirus is a highly contagious respiratory illness which is also known as COVID-19. This virus spreads through droplets in the air when an infected person coughs or sneezes. There is no specific treatment for the virus and laboratory tests are required for confirmation of diagnosis. While most recover from COVID-19, some have symptoms that last for weeks or even months after recovering from acute illness. The long term effects of COVID-19 are not currently known and it is being investigated. Those with a higher risk of dying from COVID-19 and related complications are older people and those with underlying medical conditions. Prevention measures that can be taken against this virus include wearing facial coverings, frequent washing of hands and social distancing. Currently, there is an increase in global coronavirus cases which may be due to public health restrictions being lifted in addition to new coronavirus variants.(WHO, 2021). Multiple vaccines have been developed for emergency use and over 245 million doses have been administered in 107 countries.
 
 Case Fatality Rate (CFR) is all deaths from the specific disease in the population divided by all cases of the disease in the population. It is important to note that CFR is not an accurate measure of the mortality risk of the disease during a pandemic.
 
@@ -26,11 +26,13 @@ This report will not analyze every country from the WHO data set. The WHO region
 Plots for Nigeria are shown below. Plot of new cases shows a somewhat negative linear trend of new cases over time. In the second plot, there seems to be one data point that appears to be an outlier while the daily number of new deths tends to stay below 20. 
 
 ```{r echo=FALSE}
-#Merged Data of Policy and CFR calculation 
-final<- read.csv("C:/Users/eshna/Downloads/final_data.csv")
+#WHO Data Set 
+covid <- read.csv("WHO-COVID-19-global-data.csv")
+covid = mutate(covid, CFR = Cumulative_deaths/Cumulative_cases)
+names(covid) 
 
 #Nigeria
-nigeria=filter(final,(Country=="Nigeria"))
+nigeria=filter(covid,(Country=="Nigeria"))
 nigeria=nigeria[89:188,]
 nigeria=mutate(nigeria,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -43,8 +45,8 @@ plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Ni
 Plots for Ethiopia are shown below. Plot of new cases does not appear to be linear but has a positive trend. Plot of new deaths appears to have a positive trend of new deaths as time increases. 
 ```{r echo=FALSE}
 #Ethiopia
-ethiopia=filter(final,(Country=="Ethiopia"))
-ethiopia=ethiopia[8:107,]
+ethiopia=filter(covid,(Country=="Ethiopia"))
+ethiopia=ethiopia[108:207,]
 ethiopia=mutate(ethiopia,time=seq(1:100))
 par(mfrow=c(2,1))
 plot(ethiopia$time, ethiopia$New_cases, main="Plot of New Cases over time for Ethiopia", xlab = "Time (in days)", ylab = "New Cases")
@@ -56,7 +58,7 @@ plot(ethiopia$time, ethiopia$New_deaths, main="Plot of New Deaths over time for 
 Plots for USA are shown below. There appears to be a positive trend in new cases as time increases, especially after approximately the 50th day after the 100th positive case. It does not appear to be linear. In the second plot, the number of new deaths appears to have less variability after the first ten days and does not appear that there is a linear relationship present. 
 ```{r echo=FALSE}
 #USA
-usa=filter(final,(Country=="United States"))
+usa=filter(covid,(Country=="United States of America"))
 usa=usa[61:160,]
 usa=mutate(usa,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -69,7 +71,7 @@ plot(usa$time, usa$New_deaths, main="Plot of New Deaths over time for USA",xlab 
 Plots for Brazil are shown below. There is a positive trend in new cases as time increases that appears to be somewhat linear. There is more variability in the number of new cases as time progresses. There appears to be no trend or linear relationship between the new death number and time. 
 ```{r echo=FALSE}
 #Brazil
-brazil=filter(final,(Country=="Brazil"))
+brazil=filter(covid,(Country=="Brazil"))
 brazil=brazil[71:170,]
 brazil=mutate(brazil,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -82,7 +84,7 @@ plot(brazil$time, brazil$New_deaths, main="Plot of New Deaths over time for Braz
 Plots for India are shown below. There is a positive trend that appears to be linear for new cases. There appears to be a positive linear trend with a few possible outliers present for new deaths over time. 
 ```{r echo=FALSE}
 #India
-india=filter(final,(Country=="India"))
+india=filter(covid,(Country=="India"))
 india=india[73:172,]
 india=mutate(india,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -95,7 +97,7 @@ plot(india$time, india$New_deaths, main="Plot of New Deaths over time for India"
 Plots for Indonesia are shown below. For new cases over time, it appears that there is a positive linear trend. For new deaths over time, there appears to be a slight positive linear trend with a few possible outliers. 
 ```{r echo=FALSE}
 #Indonesia
-indonesia=filter(final,(Country=="Indonesia"))
+indonesia=filter(covid,(Country=="Indonesia"))
 indonesia=indonesia[73:172,]
 indonesia=mutate(indonesia,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -108,7 +110,7 @@ plot(indonesia$time, indonesia$New_deaths, main="Plot of New Deaths over time fo
 Plots for Russia are shown below. In the first plot, there appears to be somewhat of a negative linear trend of new cases over time. In the second plot, there does not appear to be an obvious pattern or linear trend. 
 ```{r echo=FALSE}
 #Russia
-russia=filter(final,(Country=="Russia"))
+russia=filter(covid,(Country=="Russian Federation"))
 russia=russia[77:176,]
 russia=mutate(russia,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -121,7 +123,7 @@ plot(russia$time, russia$New_deaths, main="Plot of New Deaths over time for Russ
 Plots for Turkey are shown below. There is a clear nonlinear trend of new cases over time with a clear jump around day 70 where cases increase. there is also a clear nonlinear trend for new deaths over time. 
 ```{r echo=FALSE}
 #Turkey
-turkey=filter(final,(Country=="Turkey"))
+turkey=filter(covid,(Country=="Turkey"))
 turkey=turkey[77:176,]
 turkey=mutate(turkey,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -134,7 +136,7 @@ plot(turkey$time, turkey$New_deaths, main="Plot of New Deaths over time for Turk
 Plots for Pakistan are shown below. It is evident that there is no linear trend for both new cases over time and new deaths over time. 
 ```{r echo=FALSE}
 #Pakistan
-pakistan=filter(final,(Country=="Pakistan"))
+pakistan=filter(covid,(Country=="Pakistan"))
 pakistan=pakistan[75:174,]
 pakistan=mutate(pakistan,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -147,7 +149,7 @@ plot(pakistan$time, pakistan$New_deaths, main="Plot of New Deaths over time for 
 Plots for Egypt are shown below. For both plots, it is evident that there is not a linear trend. 
 ```{r echo=FALSE}
 #Egypt
-egypt=filter(final,(Country=="Egypt"))
+egypt=filter(covid,(Country=="Egypt"))
 egypt=egypt[73:172,]
 egypt=mutate(egypt,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -160,7 +162,7 @@ plot(egypt$time, egypt$New_deaths, main="Plot of New Deaths over time for Egypt"
 Plots for China are shown below. There is no clear trend present for new cases over time and it appears that there may be an outlier present. It appears that there is an outlier for new deaths over time as other data points stay below 200 deaths. 
 ```{r echo=FALSE}
 #China 
-china=filter(final,(Country=="China"))
+china=filter(covid,(Country=="China"))
 china=china[17:116,]
 china=mutate(china,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -173,7 +175,7 @@ plot(china$time, china$New_deaths, main="Plot of New Deaths over time for China"
 Plots for Japan are shown below. There is a clear nonlinear trend of new cases over time. There is a somewhat negative trend with a possible outlier present for new deaths over time. 
 ```{r echo=FALSE}
 #Japan
-japan=filter(final,(Country=="Japan"))
+japan=filter(covid,(Country=="Japan"))
 japan=japan[50:149,]
 japan=mutate(japan,time=seq(1:100))
 par(mfrow=c(2,1))
@@ -240,6 +242,17 @@ plot(japanCFR, main="Plot of Japan CFR",xlab = "Time (in days)", ylab = "CFR")
 
 
 # Statistical Approach
+binddata = rbind(nigeria,ethiopia,usa,brazil,india,indonesia,russia,turkey,pakistan,egypt,china,japan)
+
+fit0 <- lm(CFR ~ poly(time, 3), data = binddata)
+fit1 <- lm(CFR ~ poly(time, 3)*Country, data = binddata)
+
+anova(fit0,fit1)
+
+fit3 <- lm(CFR ~ poly(time, 4), data = binddata)
+fit4 <- lm(CFR ~ poly(time, 4)*Country, data = binddata)
+
+anova(fit3,fit4)
 
 # Results 
 
