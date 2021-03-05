@@ -305,6 +305,7 @@ russpoly.model = lm(CFR~ poly(time, degree = 3, raw = TRUE), data = russia)
 plot(russia$time, russia$CFR)
 lines(smooth.spline(russia$time,predict(russpoly.model)),col='blue')
 ```
+
 ##Turkey Model
 ```{r echo=FALSE}
 #For Turkey
