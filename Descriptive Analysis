@@ -50,9 +50,9 @@ usa=usa[61:160,]
 usa=mutate(usa,time=seq(1:100))
 par(mfrow=c(2,2))
 plot(usa$time, usa$New_cases, main="Plot of New Cases over time for USA", xlab = "Time (in days)", ylab = "New Cases")
-#
+#In this plot, there is a positive trend in new cases as time increases, especially after approximately the 50th day after the 100th positive case. It does not appear to be linear.
 plot(usa$time, usa$New_deaths, main="Plot of New Deaths over time for USA",xlab = "Time (in days)", ylab = "New Deaths")
-#
+#In this plot, the number of new deaths appears to have less variability after the first 10 days and it does not seem like there is a linear relationship present.
 
 
 
@@ -62,9 +62,9 @@ brazil=brazil[71:170,]
 brazil=mutate(brazil,time=seq(1:100))
 par(mfrow=c(2,2))
 plot(brazil$time, brazil$New_cases, main="Plot of New Cases over time for Brazil", xlab = "Time (in days)", ylab = "New Cases")
-#
+#In this plot, there is a positive trend in new cases as time increases that appears to be somewhat linear. There is more variability in the number of new cases as time progresses.
 plot(brazil$time, brazil$New_deaths, main="Plot of New Deaths over time for Brazil",xlab = "Time (in days)", ylab = "New Deaths")
-#
+#In this plot, there appears to be no trend or linear relationship present between the new death numbers and days.
 
 
 #India
@@ -98,7 +98,7 @@ par(mfrow=c(2,2))
 plot(russia$time, russia$New_cases, main="Plot of New Cases over time for Russia", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot we see a somewhat negative linear trend of new cases over time. 
 plot(russia$time, russia$New_deaths, main="Plot of New Deaths over time for Russia", xlab = "Time (in days)", ylab = "New Deaths")
-#
+#In this plot there is no obvious pattern or linear trend.
 
 
 #Turkey
