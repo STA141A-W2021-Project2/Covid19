@@ -35,7 +35,6 @@ names(covid)
 nigeria=filter(covid,(Country=="Nigeria"))
 nigeria=nigeria[89:188,]
 nigeria=mutate(nigeria,time=seq(1:100))
-par(mfrow=c(1,2))
 plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nigeria", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot we see a somewhat negative linear trend of new cases over time.
 plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "New Deaths")
@@ -48,7 +47,6 @@ Plots for Ethiopia are shown below. Plot of new cases does not appear to be line
 ethiopia=filter(covid,(Country=="Ethiopia"))
 ethiopia=ethiopia[108:207,]
 ethiopia=mutate(ethiopia,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(ethiopia$time, ethiopia$New_cases, main="Plot of New Cases over time for Ethiopia", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot we see a positive trend of new cases as time increases.  It does not appear to be linear.
 plot(ethiopia$time, ethiopia$New_deaths, main="Plot of New Deaths over time for Ethiopia",xlab = "Time (in days)", ylab = "New Deaths")
@@ -61,7 +59,6 @@ Plots for USA are shown below. There appears to be a positive trend in new cases
 usa=filter(covid,(Country=="United States of America"))
 usa=usa[61:160,]
 usa=mutate(usa,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(usa$time, usa$New_cases, main="Plot of New Cases over time for USA", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, there is a positive trend in new cases as time increases, especially after approximately the 50th day after the 100th positive case. It does not appear to be linear.
 plot(usa$time, usa$New_deaths, main="Plot of New Deaths over time for USA",xlab = "Time (in days)", ylab = "New Deaths")
@@ -74,7 +71,6 @@ Plots for Brazil are shown below. There is a positive trend in new cases as time
 brazil=filter(covid,(Country=="Brazil"))
 brazil=brazil[71:170,]
 brazil=mutate(brazil,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(brazil$time, brazil$New_cases, main="Plot of New Cases over time for Brazil", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, there is a positive trend in new cases as time increases that appears to be somewhat linear. There is more variability in the number of new cases as time progresses.
 plot(brazil$time, brazil$New_deaths, main="Plot of New Deaths over time for Brazil",xlab = "Time (in days)", ylab = "New Deaths")
@@ -87,7 +83,6 @@ Plots for India are shown below. There is a positive trend that appears to be li
 india=filter(covid,(Country=="India"))
 india=india[73:172,]
 india=mutate(india,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(india$time, india$New_cases, main="Plot of New Cases over time for India", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, there is a positive trend. It visually appears to be linear.
 plot(india$time, india$New_deaths, main="Plot of New Deaths over time for India",xlab = "Time (in days)", ylab = "New Deaths")
@@ -100,7 +95,6 @@ Plots for Indonesia are shown below. For new cases over time, it appears that th
 indonesia=filter(covid,(Country=="Indonesia"))
 indonesia=indonesia[73:172,]
 indonesia=mutate(indonesia,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(indonesia$time, indonesia$New_cases, main="Plot of New Cases over time for Indonesia", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot there appears to be a positive linear trend. 
 plot(indonesia$time, indonesia$New_deaths, main="Plot of New Deaths over time for Indonesia", xlab = "Time (in days)", ylab = "New Deaths")
@@ -113,7 +107,6 @@ Plots for Russia are shown below. In the first plot, there appears to be somewha
 russia=filter(covid,(Country=="Russian Federation"))
 russia=russia[77:176,]
 russia=mutate(russia,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(russia$time, russia$New_cases, main="Plot of New Cases over time for Russia", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot we see a somewhat negative linear trend of new cases over time. 
 plot(russia$time, russia$New_deaths, main="Plot of New Deaths over time for Russia", xlab = "Time (in days)", ylab = "New Deaths")
@@ -126,7 +119,6 @@ Plots for Turkey are shown below. There is a clear nonlinear trend of new cases 
 turkey=filter(covid,(Country=="Turkey"))
 turkey=turkey[77:176,]
 turkey=mutate(turkey,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(turkey$time, turkey$New_cases, main="Plot of New Cases over time for Turkey", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot there is a clear nonlinear trend. There is a clear jump around day 70 where cases increase. 
 plot(turkey$time, turkey$New_deaths, main="Plot of New Deaths over time for Turkey", xlab = "Time (in days)", ylab = "New Deaths")
@@ -139,7 +131,6 @@ Plots for Pakistan are shown below. It is evident that there is no linear trend 
 pakistan=filter(covid,(Country=="Pakistan"))
 pakistan=pakistan[75:174,]
 pakistan=mutate(pakistan,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(pakistan$time, pakistan$New_cases, main="Plot of New Cases over time for Pakistan", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, it is evident that there is not a linear trend and is unimodal. 
 plot(pakistan$time, pakistan$New_deaths, main="Plot of New Deaths over time for Pakistan", xlab = "Time (in days)", ylab = "New Deaths")
@@ -152,7 +143,6 @@ Plots for Egypt are shown below. For both plots, it is evident that there is not
 egypt=filter(covid,(Country=="Egypt"))
 egypt=egypt[73:172,]
 egypt=mutate(egypt,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(egypt$time, egypt$New_cases, main="Plot of New Cases over time for Egypt", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, it is evident that there is not a linear trend.
 plot(egypt$time, egypt$New_deaths, main="Plot of New Deaths over time for Egypt", xlab = "Time (in days)", ylab = "New Deaths")
@@ -165,7 +155,6 @@ Plots for China are shown below. There is no clear trend present for new cases o
 china=filter(covid,(Country=="China"))
 china=china[17:116,]
 china=mutate(china,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(china$time, china$New_cases, main="Plot of New Cases over time for China", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, it appears that there may be an outlier present. There is no clear trend present. 
 plot(china$time, china$New_deaths, main="Plot of New Deaths over time for China", xlab = "Time (in days)", ylab = "New Deaths")
@@ -178,7 +167,6 @@ Plots for Japan are shown below. There is a clear nonlinear trend of new cases o
 japan=filter(covid,(Country=="Japan"))
 japan=japan[50:149,]
 japan=mutate(japan,time=seq(1:100))
-par(mfrow=c(2,1))
 plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, we can see a clear non linear trend of new cases over time. 
 plot(japan$time, japan$New_deaths, main="Plot of New Deaths over time for Japan", xlab = "Time (in days)", ylab = "New Deaths")
