@@ -155,3 +155,4 @@ plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan", 
 plot(japan$time, japan$New_deaths, main="Plot of New Deaths over time for Japan", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot, it appears that there may be an outlier present. There is a somewhat negative trend. 
 
+```
