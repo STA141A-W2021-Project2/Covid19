@@ -371,6 +371,141 @@ anova(fit3,fit4)
 ```
 As shown, the p-value is extremely low for both comparisons. This means that country does have an strong statistical effect on CFR over time for both regressions of third and fourth degree.
 
+## Simultaneous Confidence Bands for Statistical Significance between Models
+BRIEF INTRO GOES HERE
+
+```{r}
+#Confidence Bounds functions from https://stats.stackexchange.com/questions/231059/compare-the-statistical-significance-of-the-difference-between-two-polynomial-re
+simultaneous_CBs <- function(linear_model, newdata, level = 0.95){
+    # Working-Hotelling 1 – α confidence bands for the model linear_model
+    # at points newdata with α = 1 - level
+
+    # summary of regression model
+    lm_summary <- summary(linear_model)
+    # degrees of freedom 
+    p <- lm_summary$df[1]
+    # residual degrees of freedom
+    nmp <-lm_summary$df[2]
+    # F-distribution
+    Fvalue <- qf(level,p,nmp)
+    # multiplier
+    W <- sqrt(p*Fvalue)
+    # confidence intervals for the mean response at the new points
+    CI <- predict(linear_model, newdata, se.fit = TRUE, interval = "confidence", 
+                  level = level)
+    # mean value at new points
+    Y_h <- CI$fit[,1]
+    # Working-Hotelling 1 – α confidence bands
+    LB <- Y_h - W*CI$se.fit
+    UB <- Y_h + W*CI$se.fit
+    sim_CB <- data.frame(LowerBound = LB, Mean = Y_h, UpperBound = UB)
+} 
+
+#Compute Prediction points
+npoints <- 100
+egyptnew <- with(egypt, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+japannew <- with(japan, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+chinanew <- with(china, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+brazilnew <- with(brazil, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+indianew <- with(india, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+indonesianew <- with(indonesia, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+pakistannew <- with(pakistan, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+russianew <- with(russia, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+turkeynew <- with(turkey, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+nigerianew <- with(nigeria, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+ethiopianew <- with(ethiopia, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+usanew <- with(usa, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+```
+##Confidence Bands
+```{r}
+#Simultaneous Confidence Bands
+
+
+mylevel = 0.95
+
+ccnigeria <- simultaneous_CBs(nigeria2, nigerianew, level = mylevel)
+ccnigeria <- ccnigeria %>% mutate(Country = "nigeria", time = nigerianew$time)
+
+ccethiopia <- simultaneous_CBs(ethiopia2, ethiopianew, level = mylevel)
+ccethiopia <- ccethiopia %>% mutate(Country = "ethiopia", time = ethiopianew$time)
+
+ccusa <- simultaneous_CBs(us2, usanew, level = mylevel)
+ccusa <- ccusa %>% mutate(Country = "usa", time = usanew$time)
+
+ccbrazil <- simultaneous_CBs(brazil2, brazilnew, level = mylevel)
+ccbrazil <- ccbrazil %>% mutate(Country = "brazil", time = brazilnew$time)
+
+ccindia <- simultaneous_CBs(india2, indianew, level = mylevel)
+ccindia <- ccindia %>% mutate(Country = "india", time = indianew$time)
+
+ccindonesia <- simultaneous_CBs(indonesia2, indonesianew, level = mylevel)
+ccindonesia <- ccindonesia %>% mutate(Country = "indonesia", time = indonesianew$time)
+
+ccrussia <- simultaneous_CBs(russpoly.model, russianew, level = mylevel)
+ccrussia <- ccrussia %>% mutate(Country = "russia", time = russianew$time)
+
+ccturkey <- simultaneous_CBs(turkpoly.model, turkeynew, level = mylevel)
+ccturkey <- ccturkey %>% mutate(Country = "turkey", time = turkeynew$time)
+
+ccpakistan <- simultaneous_CBs(pakpoly.model, pakistannew, level = mylevel)
+ccpakistan <- ccpakistan %>% mutate(Country = "pakistan", time = pakistannew$time)
+
+ccegypt <- simultaneous_CBs(modegypt3, egyptnew, level = mylevel)
+ccegypt <- ccegypt %>% mutate(Country = "egypt", time = egyptnew$time)
+
+ccchina <- simultaneous_CBs(modchina2, chinanew, level = mylevel)
+ccchina <- ccchina %>% mutate(Country = "china", time = chinanew$time)
+
+ccjapan <- simultaneous_CBs(modjapan2, japannew, level = mylevel)
+ccjapan <- ccjapan %>% mutate(Country = "japan", time = japannew$time)
+
+```
+
+```{r}
+# combine datasets
+ourdata <- rbind(nigeria, ethiopia,usa,brazil, india,indonesia,russia,turkey,pakistan,egypt,china,japan)
+ourcc   <- rbind(ccnigeria, ccethiopia,ccusa,ccbrazil,ccindia, ccindonesia, ccrussia,ccturkey,ccpakistan,ccegypt,ccchina,ccjapan )    
+ourcc   <- ourcc %>% rename(CFR = Mean)
+```
+##Plot with Confidence Bands
+```{r}
+# prepare a plot using ourdata, mapping time to x,
+# sepal width to y, and grouping the data by species
+p <- ggplot(data = ourdata, aes(x = time, y = CFR, color = Country)) + 
+# add data points
+geom_point() +
+# add quadratic regression with orthogonal polynomials and 95% pointwise
+# confidence intervals
+geom_smooth(method ="lm", formula = y ~ poly(x,2)) +
+# add 95% simultaneous confidence bands
+geom_ribbon(data = ourcc, aes(x = time, color = NULL, fill = Country, ymin = LowerBound, ymax = UpperBound),alpha = 0.5)
+print(p)
+```
+INTERPRETATION OF PLOT GOES HERE
+
 # Sensitivity Analysis 
 
 ##Nigeria Plots
@@ -456,21 +591,22 @@ The residual plot of fit0 (the model with time as the only predictor) contains p
 The residual plot of fit1 (the model with time as the only predictor) contains points randomly scattered around zero. Most of the points of the qqplot of fit1 lie along the same line, Therefore, homoscedasticity and normality assumptions are met.
 
 # Conclusion
-This report aimed to investigate how Case Fatality Rate (CFR) for COVID-19 changes across time for 12 of the most populated countries in the world (2 most populated countries per WHO region), specifically over the first hundred days after the number of cumulative cases hits 100. Through a series of statistical analysis, this report was able to analyze the hypothesis stated earlier.
+This report aimed to investigate how Case Fatality Rate (CFR) for COVID-19 changes across time for 12 highly populated countries in the world (2 most populated countries per WHO region)  over the first hundred days after the number of cumulative cases hits 100 in each country. Through a series of statistical analysis, this report was able to analyze the hypothesis stated earlier.
 
-It was hypothesized that the trends of CFR will vary significantly across these countries. The results of this report matches with the initial hypothesis. Through fitting the 12 observed countries’ CFR across time, a variety of regressions were chosen that fits the data the best. These polynomial regressions vary in correlation and degree of polynomials, which visually supports the hypothesis that CFR across time will be different for the countries. 
+It was hypothesized that the trends of CFR will vary significantly across these countries. The results of this report aligned with the initial hypothesis. Through fitting the 12 observed countries’ CFR across time, a variety of regressions were chosen that best fits the data. These polynomial regressions vary in correlation and degree of polynomials, which visually supports the hypothesis that CFR across time will be different for the countries. 
 
-For statistical and quantitative proof, employing ANOVA compares the polynomial regression that is not blocked by countries to the contrary. Since these regressions have a degree mainly of 3 and 4, these polynomial regressions were chosen for the ANOVA analysis. With an extremely low p-value, it was proven that countries do have a significant statistical effect on CFR across time, for both polynomial degrees of 3 and 4. Therefore, demonstrating CFR over time to not be constant over different countries at a highly significant level. 
+For statistical and quantitative proof, employing ANOVA compares the polynomial regression that is not blocked by countries to the contrary. Since these regressions have a degree of mainly 3 and 4, these polynomial regressions were chosen for the ANOVA analysis. With an extremely low p-value for both polynomial degrees of 3 and 4, it was proven that countries do have a significant statistical effect on CFR across time. Therefore, this demonstrated that CFR over time is not constant over different countries at a high significant level. 
 
-In order to be more specific and explore beyond the big picture, comparing the country’s regression lines side by side informs the difference between countries’ CFR over time. The use of simultaneous confidence bands, which shows the 95% confidence interval across the whole regression line, appears that even though some countries do share a similar trend and overlaps, the majority of regressions were very different from one another.  Hence, once again proving CFR trends over time is different for each country.
+In order to be more specific and conduct a more detailed analysis, comparing the country’s regression lines side by side demonstrates the difference between countries’ CFR over time. The use of simultaneous confidence bands, which shows the 95% confidence interval across the whole regression line, appears even though some countries do share a similar trend and overlaps, the majority of regressions were very different from one another.  Once again proving that CFR trends over time is different for each country.
 
-Looking at these regressions may reflect how countries are able or not able to react in controlling the virus. It is observed that most CFR trends are fluctuating across the timeframe. A drop after a peak might be due to the implementation of a certain policy or a country gaining better knowledge on how to contain and treat the virus. While an increase after a trough may be hints of hitting medical capacity or loosening of policies. There are many external factors and reasons to explore beyond numbers of COVID cases and deaths. These are all topics that can be delved deeper in further and more complicated analysis, however are all mere guesses at the current analysis.
+Looking at these regressions may reflect how countries are able or not able to react in controlling the virus. It is observed that most CFR trends are fluctuating across the timeframe. A drop after a peak might be due to the implementation of a certain policy or a country gaining better knowledge on how to contain and treat the virus. While an increase after a trough may be hints of hitting medical capacity or loosening of policies. There are many external factors and reasons to explore beyond numbers of COVID cases and deaths. These are topics that can be delved deeper in further and more complicated analysis, however are all mere guesses at the current analysis.
 
 The answer to the question of interest can be described as resounding and clear. However, it is important to note that this topic of interest has its own flaws and concerns to consider when interpreting the results.  In terms of the dataset itself, the prevalence of reported cases and deaths varies between countries. This may be due to socioeconomic, political and cultural differences in each country. The number of observations for each country is limited, which amplifies the variance caused by outliers. Forming the question of interest was also based on a lot of logical assumptions that may not be statistically or scientifically true. 
 
 As the question of interest states, this report hopes to discover if there are significant differences in CFR over the first 100 days over a 100 cases. The regression lines for each country are in no intention to be predictive, rather to be a reflection of a specific trend during a specific time. The choice of countries and the choice of the timeframe are all factors to be aware of when interpreting the regressions. Unfair comparisons between countries may be made, for example a country that has a later time frame because of reaching hundred cases later may have better knowledge on the virus than countries that were affected earlier.
 
 Overall, this report has been conclusive while assessed along with limitations. For further research, the reasons behind the trend can be explored, which could branch into a multitude of topics in politics, culture and science.
+
 
 # References 
 Community mitigation framework. (2021, February 16). Retrieved March 05, 2021, from https://www.cdc.gov/coronavirus/2019-ncov/community/community-mitigation.html 
