@@ -242,6 +242,115 @@ plot(japanCFR, main="Plot of Japan CFR",xlab = "Time (in days)", ylab = "CFR")
 
 
 # Statistical Approach
+##Egypt Model
+```{r}
+#For Egypt (choose 3, mod 2 only for comparison)
+modegypt3=lm(CFR~poly(time,degree=3,raw=T), data = egypt)
+
+plot(egypt$time,egypt$CFR)
+lines(smooth.spline(egypt$time,predict(modegypt3)),col='blue')
+
+
+```
+##Japan Model
+```{r}
+#For Japan
+modjapan2=lm(japan$CFR~poly(japan$time,degree=4,raw=T))
+
+plot(japan$time,japan$CFR)
+lines(smooth.spline(japan$time,predict(modjapan2)),col='red')
+
+```
+##China Model
+```{r}
+#For China (since the outliers are quite extreme, you guys could make a decision on what to do)
+
+modchina2=lm(china$CFR~poly(china$time,degree=4,raw=T))
+
+plot(china$time,china$CFR)
+lines(smooth.spline(china$time,predict(modchina2)),col='red')
+```
+##Brazil Model
+```{r}
+#For Brazil 
+brazil2= lm(brazil$CFR~poly(brazil$time, degree=2, raw=T))
+plot(brazil$time, brazil$CFR)
+lines(smooth.spline(brazil$time,predict(brazil2)),col='blue')
+```
+
+##India Model
+```{r}
+#For India 
+india2= lm(india$CFR~poly(india$time, degree=4, raw=T))
+par(mfrow=c(2,2))
+plot(india$time, india$CFR)
+lines(smooth.spline(india$time,predict(india2)),col='blue')
+
+```
+
+##Indonesia Model
+```{r}
+#For Indonesia 
+indonesia2= lm(indonesia$CFR~poly(indonesia$time, degree=3, raw=T))
+plot(indonesia$time, indonesia$CFR)
+lines(smooth.spline(indonesia$time,predict(indonesia2)),col='blue')
+
+```
+##Pakistan Model
+```{r}
+#For Pakistan
+pakpoly.model = lm(CFR~ poly(time, degree = 3 , raw = TRUE), data = pakistan)
+plot(pakistan$time, pakistan$CFR)
+lines(smooth.spline(pakistan$time,predict(pakpoly.model)),col='blue')
+
+```
+##Russia Model
+```{r}
+#For Russia
+russpoly.model = lm(CFR~ poly(time, degree = 3, raw = TRUE), data = russia)
+
+plot(russia$time, russia$CFR)
+lines(smooth.spline(russia$time,predict(russpoly.model)),col='blue')
+```
+##Turkey Model
+```{r}
+#For Turkey
+turkpoly.model = lm(CFR~ poly(time, degree = 2, raw = TRUE), data = turkey)
+plot(turkey$time, turkey$CFR)
+lines(smooth.spline(turkey$time,predict(turkpoly.model)),col='blue')
+
+```
+##Nigeria Model
+```{r}
+#For Nigeria 
+nigeria2= lm(nigeria$CFR~poly(nigeria$time, degree=3, raw=TRUE))
+plot(nigeria$time, nigeria$CFR)
+lines(smooth.spline(nigeria$time,predict(nigeria2)),col='blue')
+
+```
+##Ethiopia Model
+```{r}
+#For Ethiopia 
+ethiopia2= lm(ethiopia$CFR~poly(ethiopia$time, degree=3, raw=T))
+#stuck between choosing 3 or 4, 3 is more logical of a trend(leaning towards 3), 4 is more fitting and better sensitivity analysis
+plot(ethiopia$time, ethiopia$CFR)
+lines(smooth.spline(ethiopia$time,predict(ethiopia2)),col='blue')
+
+
+```
+##USA Model
+```{r}
+#For US
+us2= lm(usa$CFR~poly(usa$time, degree=4, raw=T))
+
+plot(usa$time, usa$CFR)
+lines(smooth.spline(usa$time,predict(us2)),col='blue')
+
+```
+
+
+# Results 
+```
 binddata = rbind(nigeria,ethiopia,usa,brazil,india,indonesia,russia,turkey,pakistan,egypt,china,japan)
 
 fit0 <- lm(CFR ~ poly(time, 3), data = binddata)
@@ -253,9 +362,7 @@ fit3 <- lm(CFR ~ poly(time, 4), data = binddata)
 fit4 <- lm(CFR ~ poly(time, 4)*Country, data = binddata)
 
 anova(fit3,fit4)
-
-# Results 
-
+```
 # Sensitivity Analysis 
 
 # Conclusions 
