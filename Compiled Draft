@@ -282,7 +282,6 @@ lines(smooth.spline(brazil$time,predict(brazil2)),col='blue')
 ```{r}
 #For India 
 india2= lm(india$CFR~poly(india$time, degree=4, raw=T))
-par(mfrow=c(2,2))
 plot(india$time, india$CFR)
 lines(smooth.spline(india$time,predict(india2)),col='blue')
 
