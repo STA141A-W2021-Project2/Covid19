@@ -19,7 +19,8 @@ library(ggplot2)
 ```{r}
 #WHO Data Set 
 covid <- read.csv("WHO-COVID-19-global-data.csv")
-#names(covid) 
+covid = mutate(covid, CFR = Cumulative_deaths/Cumulative_cases)
+names(covid) 
 
 #Merged Data of Policy and CFR calculation 
 final<- read.csv("final data.csv")
