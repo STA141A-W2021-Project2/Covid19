@@ -155,4 +155,54 @@ plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan", 
 plot(japan$time, japan$New_deaths, main="Plot of New Deaths over time for Japan", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot, it appears that there may be an outlier present. There is a somewhat negative trend. 
 
+#We want to look at CFR in our analysis to estimate the proportion of deaths among identified confirmed cases
+#CFR= CFR= all deaths/ all cases 
+nigeriaCFR= nigeria$Cumulative_deaths/nigeria$Cumulative_cases
+plot(nigeriaCFR, main="Plot of Nigeria CFR")
+#This plot has a negative linear trend.
+
+ethiopiaCFR= ethiopia$Cumulative_deaths/ethiopia$Cumulative_cases
+plot(ethiopiaCFR, main="Plot of Ethiopia CFR")
+#This plot has does not have a clear pattern.
+
+usaCFR= usa$Cumulative_deaths/usa$Cumulative_cases
+plot(usaCFR, main="Plot of USA CFR")
+#This plot had a negative non-linear trend.
+
+brazilCFR= brazil$Cumulative_deaths/brazil$Cumulative_cases
+plot(brazilCFR, main="Plot of Brazil CFR")
+#This plot has a negative linear trend 
+
+indiaCFR= india$Cumulative_deaths/india$Cumulative_cases
+plot(indiaCFR, main="Plot of India CFR")
+#This plot does not have a clear trend.
+
+indonesiaCFR= indonesia$Cumulative_deaths/indonesia$Cumulative_cases
+plot(indonesiaCFR, main="Plot of Indonesia CFR")
+#This plot has a negative linear trend
+
+russiaCFR= russia$Cumulative_deaths/russia$Cumulative_cases
+plot(russiaCFR, main="Plot of Russia CFR")
+#
+
+turkeyCFR= turkey$Cumulative_deaths/turkey$Cumulative_cases
+plot(turkeyCFR, main="Plot of Turkey CFR")
+#This plot has a negative non-linear trend
+
+pakistanCFR= pakistan$Cumulative_deaths/pakistan$Cumulative_cases
+plot(pakistanCFR, main="Plot of Pakistan CFR")
+#This plot does not have a clear trend
+
+egyptCFR= egypt$Cumulative_deaths/egypt$Cumulative_cases
+plot(egyptCFR, main="Plot of Egypt CFR")
+#This plot does not have a clear trend
+
+chinaCFR= china$Cumulative_deaths/china$Cumulative_cases
+plot(chinaCFR, main="Plot of China CFR")
+#This plot does not have a clear trend
+
+japanCFR= japan$Cumulative_deaths/japan$Cumulative_cases
+plot(japanCFR, main="Plot of Japan CFR")
+#This plot has a non-linear trend.
+
 ```
