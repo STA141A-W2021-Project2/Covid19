@@ -28,55 +28,59 @@ final<- read.csv("C:/Users/eshna/Downloads/final_data.csv")
 nigeria=filter(final,(Country=="Nigeria"))
 nigeria=nigeria[89:188,]
 nigeria=mutate(nigeria,time=seq(1:100))
-plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nigeria")
+par(mfrow=c(2,2))
+plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nigeria", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot we see a somewhat negative linear trend of new cases over time. 
-plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Nigeria")
+plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot there seems to be one data point that appears to be an outlier while the daily number of new deaths tends to stay below 20. 
-plot(nigeria$time, nigeria$Cumulative_cases, main="Plot of Cumulative Cases over time for Nigeria")
-#
-plot(nigeria$time, nigeria$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Nigeria")
-#
+plot(nigeria$time, nigeria$Cumulative_cases, main="Plot of Cumulative Cases over time for Nigeria", xlab = "Time (in days)", ylab = "Cumulative Cases")
+# There appears to be an approximately linear trend between Cumulative Cases over time.
+plot(nigeria$time, nigeria$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "Cumulative Deaths")
+# There appears to be an approximately linear trend between Cumulative Deaths over time.
 
-#Ethiopia 
+#Ethiopia
 ethiopia=filter(final,(Country=="Ethiopia"))
 ethiopia=ethiopia[8:107,]
 ethiopia=mutate(ethiopia,time=seq(1:100))
-plot(ethiopia$time, ethiopia$New_cases, main="Plot of New Cases over time for Ethiopia")
-#In this plot we see a positive trend of new cases as time increases.  It does not appear to be linear. 
-plot(ethiopia$time, ethiopia$New_deaths, main="Plot of New Deaths over time for Ethiopia")
-#In this plot, it appears to have a positive trend of new deaths as time increases.  
-plot(ethiopia$time, ethiopia$Cumulative_cases, main="Plot of Cumulative Cases over time for Ethiopia")
-#
-plot(ethiopia$time, ethiopia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Ethiopia")
-#
+par(mfrow=c(2,2))
+plot(ethiopia$time, ethiopia$New_cases, main="Plot of New Cases over time for Ethiopia", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot we see a positive trend of new cases as time increases.  It does not appear to be linear.
+plot(ethiopia$time, ethiopia$New_deaths, main="Plot of New Deaths over time for Ethiopia",xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, it appears to have a positive trend of new deaths as time increases. 
+plot(ethiopia$time, ethiopia$Cumulative_cases, main="Plot of Cumulative Cases over time for Ethiopia", xlab = "Time (in days)", ylab = "Cumulative Cases")
+#In this plot there seems to be an exponential trend between Cumulative Cases over time.
+plot(ethiopia$time, ethiopia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Ethiopia",xlab = "Time (in days)", ylab = "Cumulative Deaths")
+#In this plot there seems to be an exponential trend between Cumulative Deaths over time.
 
 
 #US
 usa=filter(final,(Country=="United States"))
 usa=usa[61:160,]
 usa=mutate(usa,time=seq(1:100))
-plot(usa$time, usa$New_cases, main="Plot of New Cases over time for USA")
+par(mfrow=c(2,2))
+plot(usa$time, usa$New_cases, main="Plot of New Cases over time for USA", xlab = "Time (in days)", ylab = "New Cases")
 #
-plot(usa$time, usa$New_deaths, main="Plot of New Deaths over time for USA")
+plot(usa$time, usa$New_deaths, main="Plot of New Deaths over time for USA",xlab = "Time (in days)", ylab = "New Deaths")
 #
-plot(usa$time, usa$Cumulative_cases, main="Plot of Cumulative Cases over time for USA")
+plot(usa$time, usa$Cumulative_cases, main="Plot of Cumulative Cases over time for USA", xlab = "Time (in days)", ylab = "Cumulative Cases")
 #
-plot(usa$time, usa$Cumulative_deaths, main="Plot of Cumulative Deaths over time for USA")
+plot(usa$time, usa$Cumulative_deaths, main="Plot of Cumulative Deaths over time for USA",xlab = "Time (in days)", ylab = "Cumulative Deaths")
 #
 
 
 #Brazil
 brazil=filter(final,(Country=="Brazil"))
 brazil=brazil[71:170,]
-brail=mutate(brazil,time=seq(1:100))
-plot(brazil$time, brazil$New_cases, main="Plot of New Cases over time for Brazil")
+brazil=mutate(brazil,time=seq(1:100))
+par(mfrow=c(2,2))
+plot(brazil$time, brazil$New_cases, main="Plot of New Cases over time for Brazil", xlab = "Time (in days)", ylab = "New Cases")
 #
-plot(brazil$time, brazil$New_deaths, main="Plot of New Deaths over time for Brazil")
+plot(brazil$time, brazil$New_deaths, main="Plot of New Deaths over time for Brazil",xlab = "Time (in days)", ylab = "New Deaths")
 #
-plot(brazil$time, brazil$Cumulative_cases, main="Plot of Cumulative Cases over time for Brazil")
-#
-plot(brazil$time, brazil$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Brazil")
-#
+plot(brazil$time, brazil$Cumulative_cases, main="Plot of Cumulative Cases over time for Brazil", xlab = "Time (in days)", ylab = "Cumulative Cases")
+# There appears to be an approximately linear trend between Cumulative Cases over time.
+plot(brazil$time, brazil$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Brazil",xlab = "Time (in days)", ylab = "Cumulative Deaths")
+# There appears to be an approximately linear trend between Cumulative Deaths over time.
 
 
 
@@ -84,104 +88,112 @@ plot(brazil$time, brazil$Cumulative_deaths, main="Plot of Cumulative Deaths over
 india=filter(final,(Country=="India"))
 india=india[73:172,]
 india=mutate(india,time=seq(1:100))
-plot(india$time, india$New_cases, main="Plot of New Cases over time for India")
-#In this plot, there is a positive trend. It visually appears to be linear. 
-plot(india$time, india$New_deaths, main="Plot of New Deaths over time for India")
+par(mfrow=c(2,2))
+plot(india$time, india$New_cases, main="Plot of New Cases over time for India", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, there is a positive trend. It visually appears to be linear.
+plot(india$time, india$New_deaths, main="Plot of New Deaths over time for India",xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot, there appears to be a positive linear trend with a few possible present. 
-plot(india$time, india$Cumulative_cases, main="Plot of Cumulative Cases over time for India")
-#
-plot(india$time, india$Cumulative_deaths, main="Plot of Cumulative Deaths over time for India")
-#
+plot(india$time, india$Cumulative_cases, main="Plot of Cumulative Cases over time for India", xlab = "Time (in days)", ylab = "Cumulative Cases")
+#In this plot there seems to be an linear trend between Cumulative Cases over time.
+plot(india$time, india$Cumulative_deaths, main="Plot of Cumulative Deaths over time for India",xlab = "Time (in days)", ylab = "Cumulative Deaths")
+#In this plot there seems to be an linear trend between Cumulative Deaths over time.
 
 #Indonesia
 indonesia=filter(final,(Country=="Indonesia"))
 indonesia=indonesia[73:172,]
 indonesia=mutate(indonesia,time=seq(1:100))
-plot(indonesia$time, indonesia$New_cases, main="Plot of New Cases over time for Indonesia")
+par(mfrow=c(2,2))
+plot(indonesia$time, indonesia$New_cases, main="Plot of New Cases over time for Indonesia", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot there appears to be a positive linear trend. 
-plot(indonesia$time, indonesia$New_deaths, main="Plot of New Deaths over time for Indonesia")
+plot(indonesia$time, indonesia$New_deaths, main="Plot of New Deaths over time for Indonesia", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot there appears to be a slight positive linear trend with a few possible outliers. 
-plot(indonesia$time, indonesia$Cumulative_cases, main="Plot of Cumulative Cases over time for Indonesia")
+plot(indonesia$time, indonesia$Cumulative_cases, main="Plot of Cumulative Cases over time for Indonesia", xlab = "Time (in days)", ylab = "Cumulative Cases")
 #
-plot(indonesia$time, indonesia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Indonesia")
+plot(indonesia$time, indonesia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Indonesia", xlab = "Time (in days)", ylab = "Cumulative Deaths")
 #
 
 
 #Russia
-russia=filter(final,(Country=="Russian Federation"))
+russia=filter(final,(Country=="Russia"))
 russia=russia[77:176,]
 russia=mutate(russia,time=seq(1:100))
-plot(russia$time, russia$New_cases, main="Plot of New Cases over time for Russia")
+par(mfrow=c(2,2))
+plot(russia$time, russia$New_cases, main="Plot of New Cases over time for Russia", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot we see a somewhat negative linear trend of new cases over time. 
+plot(russia$time, russia$New_deaths, main="Plot of New Deaths over time for Russia", xlab = "Time (in days)", ylab = "New Deaths")
 #
-plot(russia$time, russia$New_deaths, main="Plot of New Deaths over time for Russia")
-#
-plot(russia$time, russia$Cumulative_cases, main="Plot of Cumulative Cases over time for Russia")
-#
-plot(russia$time, russia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Russia")
-#
+plot(russia$time, russia$Cumulative_cases, main="Plot of Cumulative Cases over time for Russia", xlab = "Time (in days)", ylab = "Cumulative Cases")
+# There appears to be an approximately linear trend between Cumulative Cases over time.
+plot(russia$time, russia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Russia", xlab = "Time (in days)", ylab = "Cumulative Deaths")
+# There appears to be an approximately linear trend between Cumulative Deaths over time.
 
 #Turkey
 turkey=filter(final,(Country=="Turkey"))
 turkey=turkey[77:176,]
 turkey=mutate(turkey,time=seq(1:100))
-plot(turkey$time, turkey$New_cases, main="Plot of New Cases over time for Turkey")
+par(mfrow=c(2,2))
+plot(turkey$time, turkey$New_cases, main="Plot of New Cases over time for Turkey", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot there is a clear nonlinear trend. There is a clear jump around day 70 where cases increase. 
-plot(turkey$time, turkey$New_deaths, main="Plot of New Deaths over time for Turkey")
+plot(turkey$time, turkey$New_deaths, main="Plot of New Deaths over time for Turkey", xlab = "Time (in days)", ylab = "New Deaths")
 #There is a clear nonlinear trend. 
-plot(turkey$time, turkey$Cumulative_cases, main="Plot of Cumulative Cases over time for Turkey")
-#
-plot(turkey$time, russia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Turkey")
-#
+plot(turkey$time, turkey$Cumulative_cases, main="Plot of Cumulative Cases over time for Turkey", xlab = "Time (in days)", ylab = "Cumulative Cases")
+## There appears to be an approximately linear trend between Cumulative Cases over time. However at approximately the 70th day, Cumulative Cases increase at a higher rate.
+plot(turkey$time, russia$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Turkey", xlab = "Time (in days)", ylab = "Cumulative Deaths")
+# There appears to be an approximately linear trend between Cumulative Deaths over time.
 
 #Pakistan
 pakistan=filter(final,(Country=="Pakistan"))
 pakistan=pakistan[75:174,]
 pakistan=mutate(pakistan,time=seq(1:100))
-plot(pakistan$time, pakistan$New_cases, main="Plot of New Cases over time for Pakistan")
+par(mfrow=c(2,2))
+plot(pakistan$time, pakistan$New_cases, main="Plot of New Cases over time for Pakistan", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, it is evident that there is not a linear trend and is unimodal. 
-plot(pakistan$time, pakistan$New_deaths, main="Plot of New Deaths over time for Pakistan")
+plot(pakistan$time, pakistan$New_deaths, main="Plot of New Deaths over time for Pakistan", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot, it is evident that there is not a linear trend. 
-plot(pakistan$time, pakistan$Cumulative_cases, main="Plot of Cumulative Cases over time for Pakistan")
-#
-plot(pakistan$time, pakistan$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Pakistan")
-#
+plot(pakistan$time, pakistan$Cumulative_cases, main="Plot of Cumulative Cases over time for Pakistan", xlab = "Time (in days)", ylab = "Cumulative Cases")
+# Although there is a slight curve about half way through Time, there appears to be an approximately linear trend between Cumulative Cases over time.
+plot(pakistan$time, pakistan$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Pakistan", xlab = "Time (in days)", ylab = "Cumulative Deaths")
+#Although there is a slight curve about half way through Time, there appears to be an approximately linear trend between Cumulative Deaths over time.
 
 #Egypt
 egypt=filter(final,(Country=="Egypt"))
 egypt=egypt[73:172,]
 egypt=mutate(egypt,time=seq(1:100))
-plot(egypt$time, egypt$New_cases, main="Plot of New Cases over time for Egypt")
+par(mfrow=c(2,2))
+plot(egypt$time, egypt$New_cases, main="Plot of New Cases over time for Egypt", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, it is evident that there is not a linear trend.
-plot(egypt$time, egypt$New_deaths, main="Plot of New Deaths over time for Egypt")
+plot(egypt$time, egypt$New_deaths, main="Plot of New Deaths over time for Egypt", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot, it is evident that there is not a linear trend.
-plot(egypt$time, egypt$Cumulative_cases, main="Plot of Cumulative Cases over time for Egypt")
-#
-plot(egypt$time, egypt$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Egypt")
-#
+plot(egypt$time, egypt$Cumulative_cases, main="Plot of Cumulative Cases over time for Egypt", xlab = "Time (in days)", ylab = "Cumulative Cases")
+# Although there is a slight curve about half way through Time, there appears to be an approximately linear trend between Cumulative Cases over time.
+plot(egypt$time, egypt$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Egypt", xlab = "Time (in days)", ylab = "Cumulative Deaths")
+#Although there is a slight curve about half way through Time, there appears to be an approximately linear trend between Cumulative Deaths over time.
 
 
 #China 
 china=filter(final,(Country=="China"))
 china=china[17:116,]
 china=mutate(china,time=seq(1:100))
-plot(china$time, china$New_cases, main="Plot of New Cases over time for China")
+par(mfrow=c(2,2))
+plot(china$time, china$New_cases, main="Plot of New Cases over time for China", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, it appears that there may be an outlier present. There is no clear trend present. 
-plot(china$time, china$New_deaths, main="Plot of New Deaths over time for China")
+plot(china$time, china$New_deaths, main="Plot of New Deaths over time for China", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot there is one evident outlier with a constant level of deaths below 200. 
-plot(china$time, china$Cumulative_cases, main="Plot of Cumulative Cases over time for China")
+plot(china$time, china$Cumulative_cases, main="Plot of Cumulative Cases over time for China", xlab = "Time (in days)", ylab = "Cumulative Cases")
 #In this plot, it is evident that there is not a linear trend.
-plot(china$time, china$Cumulative_deaths, main="Plot of Cumulative Deaths over time for China")
+plot(china$time, china$Cumulative_deaths, main="Plot of Cumulative Deaths over time for China", xlab = "Time (in days)", ylab = "Cumulative Deaths")
 #
 
 #Japan
 japan=filter(final,(Country=="Japan"))
 japan=japan[50:149,]
 japan=mutate(japan,time=seq(1:100))
-plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan")
+par(mfrow=c(2,2))
+plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan", xlab = "Time (in days)", ylab = "New Cases")
 #In this plot, we can see a clear non linear trend of new cases over time. 
-plot(japan$time, japan$New_deaths, main="Plot of New Deaths over time for Japan")
+plot(japan$time, japan$New_deaths, main="Plot of New Deaths over time for Japan", xlab = "Time (in days)", ylab = "New Deaths")
 #In this plot, it appears that there may be an outlier present. There is a somewhat negative trend. 
-plot(japan$time, japan$Cumulative_cases, main="Plot of Cumulative Cases over time for Japan")
+plot(japan$time, japan$Cumulative_cases, main="Plot of Cumulative Cases over time for Japan", xlab = "Time (in days)", ylab = "Cumulative Cases")
 #
-plot(japan$time, japan$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Japan")
+plot(japan$time, japan$Cumulative_deaths, main="Plot of Cumulative Deaths over time for Japan", xlab = "Time (in days)", ylab = "Cumulative Deaths")
 #
