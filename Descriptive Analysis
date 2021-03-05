@@ -18,7 +18,7 @@ library(ggplot2)
 #Descriptive Analysis 
 ```{r}
 #WHO Data Set 
-covid <- read_csv("https://covid19.who.int/WHO-COVID-19-global-data.csv")
+covid <- read.csv("https://covid19.who.int/WHO-COVID-19-global-data.csv")
 names(covid) 
 
 #Merged Data of Policy and CFR calculation 
