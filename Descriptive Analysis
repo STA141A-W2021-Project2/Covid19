@@ -183,7 +183,7 @@ plot(indonesiaCFR, main="Plot of Indonesia CFR")
 
 russiaCFR= russia$Cumulative_deaths/russia$Cumulative_cases
 plot(russiaCFR, main="Plot of Russia CFR")
-#
+#This plot has a positive trend
 
 turkeyCFR= turkey$Cumulative_deaths/turkey$Cumulative_cases
 plot(turkeyCFR, main="Plot of Turkey CFR")
