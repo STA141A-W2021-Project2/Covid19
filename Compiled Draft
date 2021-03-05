@@ -248,6 +248,9 @@ plot(japanCFR, main="Plot of Japan CFR",xlab = "Time (in days)", ylab = "CFR")
 # Conclusions 
 
 # References 
+Sorci, G., Faivre, B., & Morand, S. (2020, November 03). Explaining among-country variation IN COVID-19 case fatality rate. Retrieved March 05, 2021, from https://www.nature.com/articles/s41598-020-75848-2#citeas 
+Tadiri, C. P., Gisinger, T., Kautzy-Willer, A., Kublickiene, K., Herrero, M. T., Raparelli, V., Pilote, L., Norris, C. M., & GOING-FWD Consortium (2020). The influence of sex and gender domains on COVID-19 cases and mortality. CMAJ : Canadian Medical Association journal = journal de l'Association medicale canadienne, 192(36), E1041–E1045. https://doi.org/10.1503/cmaj.200971 
+World Health Organization. (2021, March 1) WHO press conference on coronavirus disease (COVID-19) [Interview Transcript]. Retrieved from https://www.who.int/multi-media/details/who-press-conference-on-coronavirus-disease-(covid-19)---1-march-2021 
 ```
 ```
 ## R Markdown
