@@ -371,6 +371,191 @@ anova(fit3,fit4)
 ```
 As shown, the p-value is extremely low for both comparisons. This means that country does have an strong statistical effect on CFR over time for both regressions of third and fourth degree.
 
+
+## Simultaneous Confidence Bands for Statistical Significance between Models
+```{r}
+#Confidence Bounds functions from https://stats.stackexchange.com/questions/231059/compare-the-statistical-significance-of-the-difference-between-two-polynomial-re
+simultaneous_CBs <- function(linear_model, newdata, level = 0.95){
+    # Working-Hotelling 1 – α confidence bands for the model linear_model
+    # at points newdata with α = 1 - level
+
+    # summary of regression model
+    lm_summary <- summary(linear_model)
+    # degrees of freedom 
+    p <- lm_summary$df[1]
+    # residual degrees of freedom
+    nmp <-lm_summary$df[2]
+    # F-distribution
+    Fvalue <- qf(level,p,nmp)
+    # multiplier
+    W <- sqrt(p*Fvalue)
+    # confidence intervals for the mean response at the new points
+    CI <- predict(linear_model, newdata, se.fit = TRUE, interval = "confidence", 
+                  level = level)
+    # mean value at new points
+    Y_h <- CI$fit[,1]
+    # Working-Hotelling 1 – α confidence bands
+    LB <- Y_h - W*CI$se.fit
+    UB <- Y_h + W*CI$se.fit
+    sim_CB <- data.frame(LowerBound = LB, Mean = Y_h, UpperBound = UB)
+} 
+
+#Compute Prediction points
+npoints <- 100
+egyptnew <- with(egypt, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+japannew <- with(japan, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+chinanew <- with(china, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+brazilnew <- with(brazil, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+indianew <- with(india, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+indonesianew <- with(indonesia, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+pakistannew <- with(pakistan, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+russianew <- with(russia, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+turkeynew <- with(turkey, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+nigerianew <- with(nigeria, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+ethiopianew <- with(ethiopia, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+
+usanew <- with(usa, data.frame(time = 
+                                       seq(min(time), max(time), len = npoints )))
+```
+##Confidence Bands
+```{r}
+#Simultaneous Confidence Bands
+
+
+mylevel = 0.95
+
+ccnigeria <- simultaneous_CBs(nigeria2, nigerianew, level = mylevel)
+ccnigeria <- ccnigeria %>% mutate(Country = "nigeria", time = nigerianew$time)
+
+ccethiopia <- simultaneous_CBs(ethiopia2, ethiopianew, level = mylevel)
+ccethiopia <- ccethiopia %>% mutate(Country = "ethiopia", time = ethiopianew$time)
+
+ccusa <- simultaneous_CBs(us2, usanew, level = mylevel)
+ccusa <- ccusa %>% mutate(Country = "usa", time = usanew$time)
+
+ccbrazil <- simultaneous_CBs(brazil2, brazilnew, level = mylevel)
+ccbrazil <- ccbrazil %>% mutate(Country = "brazil", time = brazilnew$time)
+
+ccindia <- simultaneous_CBs(india2, indianew, level = mylevel)
+ccindia <- ccindia %>% mutate(Country = "india", time = indianew$time)
+
+ccindonesia <- simultaneous_CBs(indonesia2, indonesianew, level = mylevel)
+ccindonesia <- ccindonesia %>% mutate(Country = "indonesia", time = indonesianew$time)
+
+ccrussia <- simultaneous_CBs(russpoly.model, russianew, level = mylevel)
+ccrussia <- ccrussia %>% mutate(Country = "russia", time = russianew$time)
+
+ccturkey <- simultaneous_CBs(turkpoly.model, turkeynew, level = mylevel)
+ccturkey <- ccturkey %>% mutate(Country = "turkey", time = turkeynew$time)
+
+ccpakistan <- simultaneous_CBs(pakpoly.model, pakistannew, level = mylevel)
+ccpakistan <- ccpakistan %>% mutate(Country = "pakistan", time = pakistannew$time)
+
+ccegypt <- simultaneous_CBs(modegypt3, egyptnew, level = mylevel)
+ccegypt <- ccegypt %>% mutate(Country = "egypt", time = egyptnew$time)
+
+ccchina <- simultaneous_CBs(modchina2, chinanew, level = mylevel)
+ccchina <- ccchina %>% mutate(Country = "china", time = chinanew$time)
+
+ccjapan <- simultaneous_CBs(modjapan2, japannew, level = mylevel)
+ccjapan <- ccjapan %>% mutate(Country = "japan", time = japannew$time)
+
+```
+
+```{r}
+# combine datasets
+ourdata <- rbind(nigeria, ethiopia,usa,brazil, india,indonesia,russia,turkey,pakistan,egypt,china,japan)
+ourcc   <- rbind(ccnigeria, ccethiopia,ccusa,ccbrazil,ccindia, ccindonesia, ccrussia,ccturkey,ccpakistan,ccegypt,ccchina,ccjapan )    
+ourcc   <- ourcc %>% rename(CFR = Mean)
+```
+
+```{r}
+# prepare a plot using dataframe mydata, mapping sepal Length to x,
+# sepal width to y, and grouping the data by species
+plot_all <- ggplot(data = ourdata, aes(x = time, y = CFR, color = Country)) + 
+# add data points
+geom_point() + labs(title = "Simultaneous Confidence Bands - All Countries") +
+# add quadratic regression with orthogonal polynomials and 95% pointwise
+# confidence intervals
+geom_smooth(method ="lm", formula = y ~ poly(x,3)) +
+# add 95% simultaneous confidence bands
+geom_ribbon(data = ourcc, aes(x = time, color = NULL, fill = Country, ymin = LowerBound, ymax = UpperBound),alpha = 0.5)
+print(plot_all)
+```
+
+## Simultaneous Confidence Bands for Egypt and Indonesia - Two parallel
+```{r}
+two_parallel_data = rbind(egypt, indonesia)
+two_parallel_cc = rbind(ccegypt , ccindonesia)
+two_parallel_cc   <- two_parallel_cc %>% rename(CFR = Mean)
+
+plot_two_parallel <- ggplot(data = two_parallel_data, aes(x = time, y = CFR, color = Country)) + 
+# add data points
+geom_point() + labs(title = "Simultaneous Confidence Bands - Egypt and Indonesia") +
+# add quadratic regression with orthogonal polynomials and 95% pointwise
+# confidence intervals
+geom_smooth(method ="lm", formula = y ~ poly(x,3)) +
+# add 95% simultaneous confidence bands
+geom_ribbon(data = two_parallel_cc, aes(x = time, color = NULL, fill = Country, ymin = LowerBound, ymax = UpperBound),alpha = 0.5)
+print(plot_two_parallel)
+```
+
+## Simultaneous Confidence Bands for India and Nigeria - Overlap
+```{r}
+overlap_data = rbind(india, nigeria)
+overlap_cc = rbind(ccindia , ccnigeria)
+overlap_cc   <- overlap_cc %>% rename(CFR = Mean)
+
+plot_overlap <- ggplot(data = overlap_data, aes(x = time, y = CFR, color = Country)) + 
+# add data points
+geom_point() +labs(title = "Simultaneous Confidence Bands - India and Nigeria") +
+# add quadratic regression with orthogonal polynomials and 95% pointwise
+# confidence intervals
+geom_smooth(method ="lm", formula = y ~ poly(x,3)) +
+# add 95% simultaneous confidence bands
+geom_ribbon(data = overlap_cc, aes(x = time, color = NULL, fill = Country, ymin = LowerBound, ymax = UpperBound),alpha = 0.5)
+print(plot_overlap)
+```
+
+## Simultaneous Confidence Bands for Brazil and Pakistan - Different
+```{r}
+different_data = rbind(brazil, pakistan)
+different_cc = rbind(ccbrazil , ccpakistan)
+different_cc   <- different_cc %>% rename(CFR = Mean)
+
+plot_different <- ggplot(data = different_data, aes(x = time, y = CFR, color = Country)) + 
+# add data points
+geom_point() + labs(title = "Simultaneous Confidence Bands - Brazil and Pakistan") +
+# add quadratic regression with orthogonal polynomials and 95% pointwise
+# confidence intervals
+geom_smooth(method ="lm", formula = y ~ poly(x,3)) +
+# add 95% simultaneous confidence bands
+geom_ribbon(data = different_cc, aes(x = time, color = NULL, fill = Country, ymin = LowerBound, ymax = UpperBound),alpha = 0.5)
+print(plot_different)
+```
+
+
 # Sensitivity Analysis 
 
 ##Nigeria Plots
