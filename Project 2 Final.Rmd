@@ -1,0 +1,549 @@
+---
+title: "STA 141A Project 2"
+author: "Ally Deremer, Eshna Prakash, Jose Lopez, Jasper Cheng"
+date: "3/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+# Abstract 
+
+# Introduction
+The dataset utilized in this study is from the World Health Organization (WHO) in the format of an excel file that is updated on a daily basis. The data set contains information about COVID-19 cases for each of the 237 countries data was collected from. Data collection began January 3, 2020 and this report uses all data collected until March 1, 2021. The number of new cases, cumulative cases, new deaths and cumulative deaths are recorded for each day of data collection. The hypotheses this report will focus on is that Case Fatality Rate will vary across different countries. 
+
+# Background 
+Coronavirus is a highly contagious respiratory illness which is also known as COVID-19. This virus spreads through droplets in the air when an infected person coughs or sneezes. There is no specific treatment for the virus and laboratory tests are required for confirmation of diagnosis. While most recover from COVID-19, some have symptoms that last for weeks or even months after recovering from acute illness. The long term effects of COVID-19 are not currently known and it is being investigated. Those with a higher risk of dying from COVID-19 and related complications are older people and those with underlying medical conditions. Prevention measures that can be taken against this virus include wearing facial coverings, frequent washing of hands and social distancing. Currently, there is an increase in global coronavirus cases which may be due to public health restrictions being lifted in addition to new coronavirus variants.(WHO, 2021). Multiple vaccines have been developed for emergency use and over 245 million doses have been administered in 107 countries.
+
+Case Fatality Rate (CFR) is all deaths from the specific disease in the population divided by all cases of the disease in the population. It is important to note that CFR is not an accurate measure of the mortality risk of the disease during a pandemic.
+
+
+# Descriptive Analysis 
+This report will not analyze every country from the WHO data set. The WHO regions include African Region (AFR), Regions of the Americas (AMR), South East Asian Region (SEAR), European Region (EUR), Eastern Mediterranean Region (EMR) and the Western Pacific Region (WPR). This report chose the two most populated countries for each WHO region. Therefore, this report looks at Nigeria, Ethiopia, US, Brazil, India, Indonesia, Russia, Turkey, Pakistan, Egypt, China and Japan. The time period selected to focus on was  the 100 days after the 100th confirmed case of COVID-19. The purpose for this was to restrict the data set to verify all countries had at least 100 confirmed coronavirus cases to avoid influencing results due to small numbers. (Sorci, Faivre, & Morand, 2020)
+
+Plots for Nigeria are shown below. Plot of new cases shows a somewhat negative linear trend of new cases over time. In the second plot, there seems to be one data point that appears to be an outlier while the daily number of new deths tends to stay below 20. 
+
+```{r echo=FALSE}
+#WHO Data Set 
+covid <- read.csv("WHO-COVID-19-global-data.csv")
+covid = mutate(covid, CFR = Cumulative_deaths/Cumulative_cases)
+names(covid) 
+
+#Nigeria
+nigeria=filter(covid,(Country=="Nigeria"))
+nigeria=nigeria[89:188,]
+nigeria=mutate(nigeria,time=seq(1:100))
+par(mfrow=c(1,2))
+plot(nigeria$time, nigeria$New_cases, main="Plot of New Cases over time for Nigeria", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot we see a somewhat negative linear trend of new cases over time.
+plot(nigeria$time, nigeria$New_deaths, main="Plot of New Deaths over time for Nigeria",xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot there seems to be one data point that appears to be an outlier while the daily number of new deaths tends to stay below 20.
+```
+ 
+Plots for Ethiopia are shown below. Plot of new cases does not appear to be linear but has a positive trend. Plot of new deaths appears to have a positive trend of new deaths as time increases. 
+```{r echo=FALSE}
+#Ethiopia
+ethiopia=filter(covid,(Country=="Ethiopia"))
+ethiopia=ethiopia[108:207,]
+ethiopia=mutate(ethiopia,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(ethiopia$time, ethiopia$New_cases, main="Plot of New Cases over time for Ethiopia", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot we see a positive trend of new cases as time increases.  It does not appear to be linear.
+plot(ethiopia$time, ethiopia$New_deaths, main="Plot of New Deaths over time for Ethiopia",xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, it appears to have a positive trend of new deaths as time increases.
+```
+
+Plots for USA are shown below. There appears to be a positive trend in new cases as time increases, especially after approximately the 50th day after the 100th positive case. It does not appear to be linear. In the second plot, the number of new deaths appears to have less variability after the first ten days and does not appear that there is a linear relationship present. 
+```{r echo=FALSE}
+#USA
+usa=filter(covid,(Country=="United States of America"))
+usa=usa[61:160,]
+usa=mutate(usa,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(usa$time, usa$New_cases, main="Plot of New Cases over time for USA", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, there is a positive trend in new cases as time increases, especially after approximately the 50th day after the 100th positive case. It does not appear to be linear.
+plot(usa$time, usa$New_deaths, main="Plot of New Deaths over time for USA",xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, the number of new deaths appears to have less variability after the first 10 days and it does not seem like there is a linear relationship present.
+
+ggplot(usa, aes(x=time,y=New_cases))+
+  geom_point()+
+  labs(title="Plot of New Cases over time for USA",x="Time (in days)", y = "New Cases")
+
+ggplot(usa, aes(x=time,y=New_deaths))+
+  geom_point()+
+  labs(title="Plot of New Deaths over time for USA",x="Time (in days)", y = "New Deaths")
+
+ggplot(usa, aes(x=time,y=Cumulative_deaths))+
+  geom_point()+
+  labs(title="Plot of Cumulative Deaths over time for USA",x="Time (in days)", y = "Cumulative Deaths")
+
+ggplot(usa, aes(x=time,y=Cumulative_cases))+
+  geom_point()+
+  labs(title="Plot of Cumulative Cases over time for USA",x="Time (in days)", y = "Cumulative Cases")
+
+```
+
+Plots for Brazil are shown below. There is a positive trend in new cases as time increases that appears to be somewhat linear. There is more variability in the number of new cases as time progresses. There appears to be no trend or linear relationship between the new death number and time. 
+```{r echo=FALSE}
+#Brazil
+brazil=filter(covid,(Country=="Brazil"))
+brazil=brazil[71:170,]
+brazil=mutate(brazil,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(brazil$time, brazil$New_cases, main="Plot of New Cases over time for Brazil", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, there is a positive trend in new cases as time increases that appears to be somewhat linear. There is more variability in the number of new cases as time progresses.
+plot(brazil$time, brazil$New_deaths, main="Plot of New Deaths over time for Brazil",xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, there appears to be no trend or linear relationship present between the new death numbers and days.
+```
+
+Plots for India are shown below. There is a positive trend that appears to be linear for new cases. There appears to be a positive linear trend with a few possible outliers present for new deaths over time. 
+```{r echo=FALSE}
+#India
+india=filter(covid,(Country=="India"))
+india=india[73:172,]
+india=mutate(india,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(india$time, india$New_cases, main="Plot of New Cases over time for India", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, there is a positive trend. It visually appears to be linear.
+plot(india$time, india$New_deaths, main="Plot of New Deaths over time for India",xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, there appears to be a positive linear trend with a few possible outliers present. 
+```
+
+Plots for Indonesia are shown below. For new cases over time, it appears that there is a positive linear trend. For new deaths over time, there appears to be a slight positive linear trend with a few possible outliers. 
+```{r echo=FALSE}
+#Indonesia
+indonesia=filter(covid,(Country=="Indonesia"))
+indonesia=indonesia[73:172,]
+indonesia=mutate(indonesia,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(indonesia$time, indonesia$New_cases, main="Plot of New Cases over time for Indonesia", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot there appears to be a positive linear trend. 
+plot(indonesia$time, indonesia$New_deaths, main="Plot of New Deaths over time for Indonesia", xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot there appears to be a slight positive linear trend with a few possible outliers. 
+```
+
+Plots for Russia are shown below. In the first plot, there appears to be somewhat of a negative linear trend of new cases over time. In the second plot, there does not appear to be an obvious pattern or linear trend. 
+```{r echo=FALSE}
+#Russia
+russia=filter(covid,(Country=="Russian Federation"))
+russia=russia[77:176,]
+russia=mutate(russia,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(russia$time, russia$New_cases, main="Plot of New Cases over time for Russia", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot we see a somewhat negative linear trend of new cases over time. 
+plot(russia$time, russia$New_deaths, main="Plot of New Deaths over time for Russia", xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot there is no obvious pattern or linear trend.
+```
+
+Plots for Turkey are shown below. There is a clear nonlinear trend of new cases over time with a clear jump around day 70 where cases increase. there is also a clear nonlinear trend for new deaths over time. 
+```{r echo=FALSE}
+#Turkey
+turkey=filter(covid,(Country=="Turkey"))
+turkey=turkey[77:176,]
+turkey=mutate(turkey,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(turkey$time, turkey$New_cases, main="Plot of New Cases over time for Turkey", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot there is a clear nonlinear trend. There is a clear jump around day 70 where cases increase. 
+plot(turkey$time, turkey$New_deaths, main="Plot of New Deaths over time for Turkey", xlab = "Time (in days)", ylab = "New Deaths")
+#There is a clear nonlinear trend.
+```
+
+Plots for Pakistan are shown below. It is evident that there is no linear trend for both new cases over time and new deaths over time. 
+```{r echo=FALSE}
+#Pakistan
+pakistan=filter(covid,(Country=="Pakistan"))
+pakistan=pakistan[75:174,]
+pakistan=mutate(pakistan,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(pakistan$time, pakistan$New_cases, main="Plot of New Cases over time for Pakistan", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, it is evident that there is not a linear trend and is unimodal. 
+plot(pakistan$time, pakistan$New_deaths, main="Plot of New Deaths over time for Pakistan", xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, it is evident that there is not a linear trend. 
+```
+
+Plots for Egypt are shown below. For both plots, it is evident that there is not a linear trend. 
+```{r echo=FALSE}
+#Egypt
+egypt=filter(covid,(Country=="Egypt"))
+egypt=egypt[73:172,]
+egypt=mutate(egypt,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(egypt$time, egypt$New_cases, main="Plot of New Cases over time for Egypt", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, it is evident that there is not a linear trend.
+plot(egypt$time, egypt$New_deaths, main="Plot of New Deaths over time for Egypt", xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, it is evident that there is not a linear trend.
+```
+
+Plots for China are shown below. There is no clear trend present for new cases over time and it appears that there may be an outlier present. It appears that there is an outlier for new deaths over time as other data points stay below 200 deaths. 
+```{r echo=FALSE}
+#China 
+china=filter(covid,(Country=="China"))
+china=china[17:116,]
+china=mutate(china,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(china$time, china$New_cases, main="Plot of New Cases over time for China", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, it appears that there may be an outlier present. There is no clear trend present. 
+plot(china$time, china$New_deaths, main="Plot of New Deaths over time for China", xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot there is one evident outlier with a constant level of deaths below 200. 
+```
+
+Plots for Japan are shown below. There is a clear nonlinear trend of new cases over time. There is a somewhat negative trend with a possible outlier present for new deaths over time. 
+```{r echo=FALSE}
+#Japan
+japan=filter(covid,(Country=="Japan"))
+japan=japan[50:149,]
+japan=mutate(japan,time=seq(1:100))
+par(mfrow=c(2,1))
+plot(japan$time, japan$New_cases, main="Plot of New Cases over time for Japan", xlab = "Time (in days)", ylab = "New Cases")
+#In this plot, we can see a clear non linear trend of new cases over time. 
+plot(japan$time, japan$New_deaths, main="Plot of New Deaths over time for Japan", xlab = "Time (in days)", ylab = "New Deaths")
+#In this plot, it appears that there may be an outlier present. There is a somewhat negative trend. 
+```
+
+This analysis also wants to look at Case Fatality Rate (CFR) to estimate the proportion of deaths among the identified confirmed cases. It appears that Nigeria, Brazil, and Indonesia have a negative linear trend. USA, Turkey and Japan have a nonlinear trend. Ethiopia, India, Pakistan, Egypt and China do not have a clear trend while Russia has a postive trend. 
+
+```{r echo=FALSE}
+#We want to look at CFR in our analysis to estimate the proportion of deaths among identified confirmed cases
+#CFR= CFR= all deaths/ all cases 
+par(mfrow=c(3,4))
+nigeriaCFR= nigeria$Cumulative_deaths/nigeria$Cumulative_cases
+plot(nigeriaCFR, main="Plot of Nigeria CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has a negative linear trend.
+
+ethiopiaCFR= ethiopia$Cumulative_deaths/ethiopia$Cumulative_cases
+plot(ethiopiaCFR, main="Plot of Ethiopia CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has does not have a clear pattern.
+
+usaCFR= usa$Cumulative_deaths/usa$Cumulative_cases
+plot(usaCFR, main="Plot of USA CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot had a negative non-linear trend.
+
+brazilCFR= brazil$Cumulative_deaths/brazil$Cumulative_cases
+plot(brazilCFR, main="Plot of Brazil CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has a negative linear trend 
+
+indiaCFR= india$Cumulative_deaths/india$Cumulative_cases
+plot(indiaCFR, main="Plot of India CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot does not have a clear trend.
+
+indonesiaCFR= indonesia$Cumulative_deaths/indonesia$Cumulative_cases
+plot(indonesiaCFR, main="Plot of Indonesia CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has a negative linear trend
+
+russiaCFR= russia$Cumulative_deaths/russia$Cumulative_cases
+plot(russiaCFR, main="Plot of Russia CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has a positive trend
+
+turkeyCFR= turkey$Cumulative_deaths/turkey$Cumulative_cases
+plot(turkeyCFR, main="Plot of Turkey CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has a negative non-linear trend
+
+pakistanCFR= pakistan$Cumulative_deaths/pakistan$Cumulative_cases
+plot(pakistanCFR, main="Plot of Pakistan CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot does not have a clear trend
+
+egyptCFR= egypt$Cumulative_deaths/egypt$Cumulative_cases
+plot(egyptCFR, main="Plot of Egypt CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot does not have a clear trend
+
+chinaCFR= china$Cumulative_deaths/china$Cumulative_cases
+plot(chinaCFR, main="Plot of China CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot does not have a clear trend
+
+japanCFR= japan$Cumulative_deaths/japan$Cumulative_cases
+plot(japanCFR, main="Plot of Japan CFR",xlab = "Time (in days)", ylab = "CFR")
+#This plot has a non-linear trend.
+```
+
+
+# Statistical Approach
+For statistical analysis, regression modeling will be employed. Through the descriptive analysis, it has been learned that data points are scattered mostly in a non-linear faction across every country under observation. Therefore, polynomial regression will be fitted according to human intuition. As it is known, there is a trade off between variance and bias for polynomial regression. While a high degree regression may represent every data point accurately, it does not necessarily reflect a meaningful trend and is incomparable to other regressions. Hence, the degree of polynomial regression is considered under a low bias, low variance basis, instead of sacrificing one for the other.
+
+
+##Nigeria Model
+```{r}
+#For Nigeria 
+nigeria2= lm(nigeria$CFR~poly(nigeria$time, degree=3, raw=TRUE))
+plot(nigeria$time, nigeria$CFR)
+lines(smooth.spline(nigeria$time,predict(nigeria2)),col='blue')
+nigeriap=data.frame(yfit=predict(nigeria2,nigeria),xfit=nigeria$time)
+ggplot(nigeria,aes(x=time,y=CFR))+
+  geom_point()+
+  geom_line(nigeriap,mapping=aes(x=xfit,y=yfit),col="blue")+
+  labs(title="CFR vs Time",x="Time")
+
+
+```
+
+##Ethiopia Model
+```{r}
+#For Ethiopia 
+ethiopia2= lm(ethiopia$CFR~poly(ethiopia$time, degree=3, raw=T))
+#stuck between choosing 3 or 4, 3 is more logical of a trend(leaning towards 3), 4 is more fitting and better sensitivity analysis
+plot(ethiopia$time, ethiopia$CFR)
+lines(smooth.spline(ethiopia$time,predict(ethiopia2)),col='blue')
+
+
+```
+
+##USA Model
+```{r}
+#For US
+us1= lm(usa$CFR~poly(usa$time, degree=1, raw=T))
+us3= lm(usa$CFR~poly(usa$time, degree=3, raw=T))
+us4= lm(usa$CFR~poly(usa$time, degree=4, raw=T))
+us50= lm(usa$CFR~poly(usa$time, degree=50, raw=T))
+
+#plot(usa$time, usa$CFR)
+#lines(smooth.spline(usa$time,predict(us2)),col='red')
+
+usa1=data.frame(yfit=predict(us1,usa),xfit=usa$time)
+usa3=data.frame(yfit=predict(us3,usa),xfit=usa$time)
+usa4=data.frame(yfit=predict(us4,usa),xfit=usa$time)
+usa50=data.frame(yfit=predict(us50,usa),xfit=usa$time)
+
+ggplot(usa,aes(x=time,y=CFR))+
+  geom_point()+
+  labs(title="USA, CFR vs Time",x="Time")+
+  geom_line(usa1,mapping=aes(x=xfit,y=yfit),col="red")+
+  geom_line(usa3,mapping=aes(x=xfit,y=yfit),col="blue")+
+  geom_line(usa4,mapping=aes(x=xfit,y=yfit),col="green")+
+  geom_line(usa50,mapping=aes(x=xfit,y=yfit),col="purple")
+  
+```
+
+##Brazil Model
+```{r}
+#For Brazil 
+brazil2= lm(brazil$CFR~poly(brazil$time, degree=2, raw=T))
+plot(brazil$time, brazil$CFR)
+lines(smooth.spline(brazil$time,predict(brazil2)),col='blue')
+```
+
+##India Model
+```{r}
+#For India 
+india2= lm(india$CFR~poly(india$time, degree=4, raw=T))
+plot(india$time, india$CFR)
+lines(smooth.spline(india$time,predict(india2)),col='blue')
+
+```
+
+##Indonesia Model
+```{r}
+#For Indonesia 
+indonesia2= lm(indonesia$CFR~poly(indonesia$time, degree=3, raw=T))
+plot(indonesia$time, indonesia$CFR)
+lines(smooth.spline(indonesia$time,predict(indonesia2)),col='blue')
+
+```
+
+##Pakistan Model
+```{r}
+#For Pakistan
+pakpoly.model = lm(CFR~ poly(time, degree = 3 , raw = TRUE), data = pakistan)
+plot(pakistan$time, pakistan$CFR)
+lines(smooth.spline(pakistan$time,predict(pakpoly.model)),col='blue')
+
+```
+
+##Russia Model
+```{r}
+#For Russia
+russpoly.model = lm(CFR~ poly(time, degree = 3, raw = TRUE), data = russia)
+
+plot(russia$time, russia$CFR)
+lines(smooth.spline(russia$time,predict(russpoly.model)),col='blue')
+
+russiap=data.frame(yfit=predict(russpoly.model,nigeria),xfit=russia$time)
+ggplot(russia,aes(x=time,y=CFR))+
+  geom_point()+
+  geom_line(russiap,mapping=aes(x=xfit,y=yfit),col="red")+
+  labs(title="Russia, CFR vs Time",x="Time")
+```
+##Turkey Model
+```{r}
+#For Turkey
+turkpoly.model = lm(CFR~ poly(time, degree = 2, raw = TRUE), data = turkey)
+plot(turkey$time, turkey$CFR)
+lines(smooth.spline(turkey$time,predict(turkpoly.model)),col='blue')
+
+turkeyp=data.frame(yfit=predict(turkpoly.model,nigeria),xfit=russia$time)
+ggplot(turkey,aes(x=time,y=CFR))+
+  geom_point()+
+  geom_line(turkeyp,mapping=aes(x=xfit,y=yfit),col="red")+
+  labs(title="Turkey, CFR vs Time",x="Time")
+```
+
+##Egypt Model
+```{r}
+#For Egypt (choose 3, mod 2 only for comparison)
+modegypt3=lm(CFR~poly(time,degree=3,raw=T), data = egypt)
+
+plot(egypt$time,egypt$CFR)
+lines(smooth.spline(egypt$time,predict(modegypt3)),col='blue')
+
+
+```
+
+##Japan Model
+```{r}
+#For Japan
+modjapan2=lm(japan$CFR~poly(japan$time,degree=4,raw=T))
+
+plot(japan$time,japan$CFR)
+lines(smooth.spline(japan$time,predict(modjapan2)),col='red')
+
+japanp=data.frame(yfit=predict(modjapan2,japan),xfit=japan$time)
+ggplot(japan,aes(x=time,y=CFR))+
+  geom_point()+
+  geom_line(japanp,mapping=aes(x=xfit,y=yfit),col="red")+
+  labs(title="Japan, CFR vs Time",x="Time")
+```
+##China Model
+```{r}
+#For China (since the outliers are quite extreme, you guys could make a decision on what to do)
+
+modchina2=lm(china$CFR~poly(china$time,degree=4,raw=T))
+
+plot(china$time,china$CFR)
+lines(smooth.spline(china$time,predict(modchina2)),col='red')
+```
+
+
+
+
+# Results 
+
+
+For an actual answer to our question of interest, there will be two approaches to reach suitable results: ANOVA, and confidence bands.
+
+In the following ANOVA models, data across all 12 countries will be fit into a regression of a certain polynomial, the same data set will then be fit into the same level of polynomial but with regards to each country. ANOVA will attempt to compare the two regression models to prove if country does have an effect on CFR over time. 
+
+Since this type of ANOVA model can only use one chosen degree of polynomials, the third and fourth degree will be tested since they are the most common regressions fitted above.
+```{r}
+binddata = rbind(nigeria,ethiopia,usa,brazil,india,indonesia,russia,turkey,pakistan,egypt,china,japan)
+
+fit0 <- lm(CFR ~ poly(time, 3), data = binddata)
+fit1 <- lm(CFR ~ poly(time, 3)*Country, data = binddata)
+
+anova(fit0,fit1)
+
+fit3 <- lm(CFR ~ poly(time, 4), data = binddata)
+fit4 <- lm(CFR ~ poly(time, 4)*Country, data = binddata)
+
+anova(fit3,fit4)
+```
+As shown, the p-value is extremely low for both comparisons. This means that country does have an strong statistical effect on CFR over time for both regressions of third and fourth degree.
+
+# Sensitivity Analysis 
+
+##Nigeria Plots
+```{r}
+nigeriaresid = plot(nigeria2,1)
+nigeriaqq = plot(nigeria2, 2)
+```
+##Ethiopia Plots
+```{r}
+ethiopiaresid = plot(ethiopia2,1)
+ethiopiaqq = plot(ethiopia2,2)
+```
+##USA Plots
+```{r}
+usaresid = plot(us2,1)
+usaqq = plot(us2,2)
+```
+##Brazil Plots
+```{r}
+brazilresid = plot(brazil2,1)
+brazilqq = plot(brazil2,2)
+```
+##India Plots
+```{r}
+indiaresid = plot(india2,1)
+indiaqq = plot(india2,2)
+```
+##Indonesia Plots
+```{r}
+indonesiaresid = plot(indonesia2,1)
+indonesiaqq = plot(indonesia2,2)
+```
+##Russia Plots
+```{r}
+russiaresid = plot(russpoly.model,1)
+russiaqq = plot(russpoly.model,2)
+```
+##Turkey Plots
+```{r}
+turkeyresid = plot(turkpoly.model,1)
+turkeyqq = plot(turkpoly.model,2)
+```
+##Pakistan Plots
+```{r}
+pakistanresid = plot(pakpoly.model,1)
+pakistanqq = plot(pakpoly.model,2)
+```
+##Egypt Plots
+```{r}
+egyptresid = plot(modegypt3,1)
+egyptqq = plot(modegypt3,2)
+```
+##China Plots
+```{r}
+chinaresid = plot(modchina2,1)
+chinaqq = plot(modchina2,2)
+```
+##Japan Plots
+```{r}
+japanresid = plot(modjapan2,1)
+japanqq = plot(modjapan2,2)
+```
+
+From the residual vs fitted and qq plots of the twelve countries, we observe that the model assumptions for the regression conducted are roughly met. The residual plots for all countries roughly exhibit homoscedasticity. The qq plots for the countries show the normality assumption is met as most of the points on the plots fall along the same line (indicating that our distribution has the same shape as the theoretical distribution). 
+
+##ANOVA Plots
+
+```{r}
+binddata = rbind(nigeria,ethiopia,usa,brazil,india,indonesia,russia,turkey,pakistan,egypt,china,japan)
+
+fit0 <- lm(CFR ~ poly(time, 3), data = binddata)
+fit1 <- lm(CFR ~ poly(time, 3)*Country, data = binddata)
+
+anova(fit0,fit1)
+
+plot(fit0,1)
+plot(fit0,2)
+plot(fit1)
+```
+
+The residual plot of fit0 (the model with time as the only predictor) contains points randomly scattered around zero. Most of the points of the qqplot of fit0 lie along the same line, Therefore, homoscedasticity and normality assumptions are met.
+
+The residual plot of fit1 (the model with time as the only predictor) contains points randomly scattered around zero. Most of the points of the qqplot of fit1 lie along the same line, Therefore, homoscedasticity and normality assumptions are met.
+
+# Conclusion
+This report aimed to investigate how Case Fatality Rate (CFR) for COVID-19 changes across time for 12 of the most populated countries in the world (2 most populated countries per WHO region), specifically over the first hundred days after the number of cumulative cases hits 100. Through a series of statistical analysis, this report was able to analyze the hypothesis stated earlier.
+
+It was hypothesized that the trends of CFR will vary significantly across these countries. The results of this report matches with the initial hypothesis. Through fitting the 12 observed countries’ CFR across time, a variety of regressions were chosen that fits the data the best. These polynomial regressions vary in correlation and degree of polynomials, which visually supports the hypothesis that CFR across time will be different for the countries. 
+
+For statistical and quantitative proof, employing ANOVA compares the polynomial regression that is not blocked by countries to the contrary. Since these regressions have a degree mainly of 3 and 4, these polynomial regressions were chosen for the ANOVA analysis. With an extremely low p-value, it was proven that countries do have a significant statistical effect on CFR across time, for both polynomial degrees of 3 and 4. Therefore, demonstrating CFR over time to not be constant over different countries at a highly significant level. 
+
+In order to be more specific and explore beyond the big picture, comparing the country’s regression lines side by side informs the difference between countries’ CFR over time. The use of simultaneous confidence bands, which shows the 95% confidence interval across the whole regression line, appears that even though some countries do share a similar trend and overlaps, the majority of regressions were very different from one another.  Hence, once again proving CFR trends over time is different for each country.
+
+Looking at these regressions may reflect how countries are able or not able to react in controlling the virus. It is observed that most CFR trends are fluctuating across the timeframe. A drop after a peak might be due to the implementation of a certain policy or a country gaining better knowledge on how to contain and treat the virus. While an increase after a trough may be hints of hitting medical capacity or loosening of policies. There are many external factors and reasons to explore beyond numbers of COVID cases and deaths. These are all topics that can be delved deeper in further and more complicated analysis, however are all mere guesses at the current analysis.
+
+The answer to the question of interest can be described as resounding and clear. However, it is important to note that this topic of interest has its own flaws and concerns to consider when interpreting the results.  In terms of the dataset itself, the prevalence of reported cases and deaths varies between countries. This may be due to socioeconomic, political and cultural differences in each country. The number of observations for each country is limited, which amplifies the variance caused by outliers. Forming the question of interest was also based on a lot of logical assumptions that may not be statistically or scientifically true. 
+
+As the question of interest states, this report hopes to discover if there are significant differences in CFR over the first 100 days over a 100 cases. The regression lines for each country are in no intention to be predictive, rather to be a reflection of a specific trend during a specific time. The choice of countries and the choice of the timeframe are all factors to be aware of when interpreting the regressions. Unfair comparisons between countries may be made, for example a country that has a later time frame because of reaching hundred cases later may have better knowledge on the virus than countries that were affected earlier.
+
+Overall, this report has been conclusive while assessed along with limitations. For further research, the reasons behind the trend can be explored, which could branch into a multitude of topics in politics, culture and science.
+
+
+# References 
+Community mitigation framework. (2021, February 16). Retrieved March 05, 2021, from https://www.cdc.gov/coronavirus/2019-ncov/community/community-mitigation.html 
+Howard, J., Huang, A., Li, Z., Tufekci, Z., Zdimal, V., Westhuizen, H., . . . Rimoin, A. (2021, January 26). An evidence review of face masks against COVID-19. Retrieved March 05, 2021, from https://www.pnas.org/content/118/4/e2014564118 
+Sorci, G., Faivre, B., & Morand, S. (2020, November 03). Explaining among-country variation IN COVID-19 case fatality rate. Retrieved March 05, 2021, from https://www.nature.com/articles/s41598-020-75848-2#citeas 
+Tadiri, C. P., Gisinger, T., Kautzy-Willer, A., Kublickiene, K., Herrero, M. T., Raparelli, V., Pilote, L., Norris, C. M., & GOING-FWD Consortium (2020). The influence of sex and gender domains on COVID-19 cases and mortality. CMAJ : Canadian Medical Association journal = journal de l'Association medicale canadienne, 192(36), E1041–E1045. https://doi.org/10.1503/cmaj.200971 
+World Health Organization. (2021, March 1) WHO press conference on coronavirus disease (COVID-19) [Interview Transcript]. Retrieved from https://www.who.int/multi-media/details/who-press-conference-on-coronavirus-disease-(covid-19)---1-march-2021 
+Used codes on confidence interval bands : https://stats.stackexchange.com/questions/231059/compare-the-statistical-significance-of-the-difference-between-two-polynomial-re
